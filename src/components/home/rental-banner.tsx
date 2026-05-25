@@ -14,7 +14,7 @@ const plans = [
 
 export function RentalBanner() {
   return (
-    <section className="bg-gradient-to-br from-[#0F172A] to-brand-dark py-16 md:py-24 relative overflow-hidden">
+    <section className="bg-gradient-to-br from-[#0F172A] to-brand-dark py-10 md:py-16 relative overflow-hidden">
       {/* Decorative background */}
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 pointer-events-none" />
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-blue/20 blur-[150px] rounded-full pointer-events-none translate-x-1/3 -translate-y-1/3" />

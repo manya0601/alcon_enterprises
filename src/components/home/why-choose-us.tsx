@@ -46,11 +46,11 @@ const services = [
 
 export function WhyChooseUs() {
   return (
-    <section className="bg-white py-16 md:py-24 border-b border-border-gray relative overflow-hidden">
+    <section className="bg-white py-10 md:py-16 border-b border-border-gray relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-soft-gray to-transparent rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
           <SectionHeader
             badge="Our Expertise"
             title="Comprehensive Services"

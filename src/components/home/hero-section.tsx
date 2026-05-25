@@ -84,8 +84,14 @@ export function HeroSection() {
                 {/* Main Product Card */}
                 <div className="absolute top-[10%] right-[5%] w-[70%] bg-white rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-border-gray z-20">
                   <div className="aspect-video bg-soft-gray rounded-xl mb-3 flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-light-sky/50 to-transparent" />
-                    <Printer className="w-16 h-16 text-brand/40 relative z-10" />
+                    <img 
+                      src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600" 
+                      alt="HP LaserJet Enterprise Printer"
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=600";
+                      }}
+                    />
                     <div className="absolute top-2 left-2 bg-accent-cyan text-white text-[9px] font-bold px-2 py-0.5 rounded-full z-10">BESTSELLER</div>
                   </div>
                   <h3 className="text-[14px] font-bold text-dark-text mb-1">HP LaserJet Pro Enterprise</h3>
