@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Building2, Shield, Clock, Users, ArrowRight, Star, Tag, Printer, Wrench } from "lucide-react";
+import Image from "next/image";
+import { ShoppingBag, Building2, Shield, Clock, Users, ArrowRight, Star, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
 import { FadeIn } from "@/components/shared/section-wrapper";
@@ -83,14 +84,13 @@ export function HeroSection() {
               <div className="relative z-10 w-full aspect-[4/3] max-w-[500px] mx-auto">
                 {/* Main Product Card */}
                 <div className="absolute top-[10%] right-[5%] w-[70%] bg-white rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-border-gray z-20">
-                  <div className="aspect-video bg-soft-gray rounded-xl mb-3 flex items-center justify-center relative overflow-hidden">
-                    <img 
-                      src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600" 
+                  <div className="aspect-video bg-soft-gray rounded-xl mb-3 relative overflow-hidden">
+                    <Image 
+                      src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=500" 
                       alt="HP LaserJet Enterprise Printer"
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                      onError={(e) => {
-                        e.currentTarget.src = "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=600";
-                      }}
+                      fill
+                      className="object-cover transition-transform duration-500 hover:scale-105"
+                      unoptimized
                     />
                     <div className="absolute top-2 left-2 bg-accent-cyan text-white text-[9px] font-bold px-2 py-0.5 rounded-full z-10">BESTSELLER</div>
                   </div>

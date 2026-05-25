@@ -36,12 +36,10 @@ export function CategoryStrip() {
     <section className="relative bg-white py-14 md:py-20 border-b border-border-gray overflow-hidden">
       {/* Subtle watermark background for brand partners */}
       <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden opacity-10">
-        <div className="absolute top-[8%] left-[5%] text-[50px] sm:text-[70px] md:text-[95px] font-black tracking-tighter text-[#02367B]/10 select-none">HP</div>
-        <div className="absolute top-[12%] right-[8%] text-[45px] sm:text-[65px] md:text-[85px] font-black tracking-tighter text-[#02367B]/10 select-none">Canon</div>
-        <div className="absolute top-[42%] left-[3%] text-[48px] sm:text-[68px] md:text-[90px] font-black tracking-tighter text-[#02367B]/10 select-none">Epson</div>
-        <div className="absolute top-[48%] right-[5%] text-[40px] sm:text-[60px] md:text-[80px] font-black tracking-tighter text-[#02367B]/10 select-none">Brother</div>
-        <div className="absolute bottom-[8%] left-[15%] text-[46px] sm:text-[66px] md:text-[88px] font-black tracking-tighter text-[#02367B]/10 select-none">Xerox</div>
-        <div className="absolute bottom-[12%] right-[20%] text-[44px] sm:text-[64px] md:text-[82px] font-black tracking-tighter text-[#02367B]/10 select-none">Ricoh</div>
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-8 p-8 text-4xl font-bold text-[#02367B]">
+          <div>HP</div><div>Canon</div><div>Epson</div>
+          <div>Brother</div><div>Xerox</div><div>Ricoh</div>
+        </div>
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
