@@ -64,16 +64,6 @@ export const NAV_LINKS: NavLink[] = [
         href: "/buy?category=printers",
         description: "Enterprise-grade printers for every need",
       },
-      {
-        title: "Printer Parts",
-        href: "/buy?category=printer-parts",
-        description: "Genuine replacement parts & accessories",
-      },
-      {
-        title: "Printer Tools",
-        href: "/buy?category=printer-tools",
-        description: "Professional maintenance tools",
-      },
     ],
   },
   {
