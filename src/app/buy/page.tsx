@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Search, SlidersHorizontal, Star, ShoppingCart, TrendingUp, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,12 +89,8 @@ export default function BuyPage() {
 
                           {/* Image area */}
                           <div className="relative bg-soft-gray/50 rounded-t-2xl p-6 flex items-center justify-center aspect-square group-hover:bg-light-sky/20 transition-colors">
-                            <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-white shadow-sm border border-border-gray flex items-center justify-center group-hover:scale-110 transition-transform duration-500 relative z-0">
-                              <svg viewBox="0 0 48 48" className="w-12 h-12 text-brand/30" fill="currentColor">
-                                <rect x="10" y="20" width="28" height="14" rx="2" />
-                                <rect x="14" y="10" width="20" height="12" rx="2" opacity="0.6" />
-                                <rect x="12" y="33" width="24" height="7" rx="1.5" opacity="0.4" />
-                              </svg>
+                            <div className="w-full h-full rounded-2xl bg-white shadow-sm border border-border-gray flex items-center justify-center group-hover:scale-105 transition-transform duration-500 relative z-0 overflow-hidden">
+                              <Image src={p.images[0]} alt={p.name} fill className="object-cover" unoptimized />
                             </div>
                           </div>
 
