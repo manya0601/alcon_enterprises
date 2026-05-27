@@ -4,8 +4,6 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   { id: "toner-cartridges", name: "Toner Cartridges", slug: "toner-cartridges", description: "Premium toner cartridges for laser printers", productCount: 10 },
   { id: "ink-cartridges", name: "Ink Cartridges", slug: "ink-cartridges", description: "Original & compatible ink cartridges", productCount: 6 },
   { id: "printers", name: "Printers", slug: "printers", description: "Enterprise-grade printers", productCount: 4 },
-  { id: "printer-parts", name: "Printer Parts", slug: "printer-parts", description: "Genuine replacement parts", productCount: 5 },
-  { id: "printer-tools", name: "Printer Tools", slug: "printer-tools", description: "Professional maintenance tools", productCount: 3 },
 ];
 
 const CAT = PRODUCT_CATEGORIES;
