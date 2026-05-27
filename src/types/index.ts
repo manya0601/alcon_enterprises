@@ -16,6 +16,7 @@ export interface Product {
   sku: string;
   stock: number;
   specifications: Record<string, string>;
+  features?: string[];
   compatiblePrinters: string[];
   isTrending: boolean;
   isSubscription: boolean;

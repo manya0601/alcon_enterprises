@@ -71,7 +71,7 @@ export default function BuyPage() {
                     const discount = p.comparePrice ? Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100) : 0;
                     return (
                       <FadeIn key={p.id} delay={i * 0.05}>
-                        <div className="bg-white rounded-2xl border border-border-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:border-accent-blue/30 transition-all duration-300 group flex flex-col h-full relative overflow-hidden">
+                        <Link href={`/buy/${p.slug}`} className="bg-white rounded-2xl border border-border-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:border-accent-blue/30 transition-all duration-300 group flex flex-col h-full relative overflow-hidden block">
                           {/* Badges */}
                           <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
                             {p.isTrending && (
@@ -127,7 +127,7 @@ export default function BuyPage() {
                               </Button>
                             </div>
                           </div>
-                        </div>
+                        </Link>
                       </FadeIn>
                     );
                   })}
