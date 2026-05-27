@@ -50,7 +50,7 @@ export const NAV_LINKS: NavLink[] = [
     href: "/buy",
     children: [
       {
-        title: "Ink Cartridges",
+        title: "Ink Cartridge & Ink",
         href: "/buy?category=ink-cartridges",
         description: "Original & compatible ink cartridges for all major brands",
       },
@@ -58,6 +58,16 @@ export const NAV_LINKS: NavLink[] = [
         title: "Toner Cartridges",
         href: "/buy?category=toner-cartridges",
         description: "Premium toner cartridges for laser printers",
+      },
+      {
+        title: "Toner Powder",
+        href: "/buy?category=toner-powder",
+        description: "High-density toner powder for refilling",
+      },
+      {
+        title: "Drums (Imaging & OPC)",
+        href: "/buy?category=drums",
+        description: "Long-lasting imaging drum units",
       },
       {
         title: "Printers",
