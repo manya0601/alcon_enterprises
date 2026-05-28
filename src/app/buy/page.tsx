@@ -88,9 +88,9 @@ export default function BuyPage() {
                           </div>
 
                           {/* Image area */}
-                          <div className="relative bg-soft-gray/50 rounded-t-2xl p-6 flex items-center justify-center aspect-square group-hover:bg-light-sky/20 transition-colors">
-                            <div className="w-full h-full rounded-2xl bg-white shadow-sm border border-border-gray flex items-center justify-center group-hover:scale-105 transition-transform duration-500 relative z-0 overflow-hidden">
-                              <Image src={p.images[0]} alt={p.name} fill className="object-cover" unoptimized />
+                          <div className="relative bg-soft-gray/50 rounded-t-2xl p-4 flex items-center justify-center aspect-square group-hover:bg-light-sky/20 transition-colors">
+                            <div className="w-full h-full rounded-2xl bg-white shadow-sm border border-border-gray flex items-center justify-center group-hover:scale-105 transition-transform duration-500 relative z-0 overflow-hidden p-2">
+                              <Image src={p.images[0]} alt={p.name} fill className="object-contain p-2" unoptimized />
                             </div>
                           </div>
 
