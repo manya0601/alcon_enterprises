@@ -4,10 +4,85 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCartStore } from "@/store";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react";
+import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, totalPrice } = useCartStore();
+  const { items, updateQuantity, removeItem, totalPrice, clearCart } = useCartStore();
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleCheckout = async () => {
+    setIsProcessing(true);
+    const res = await loadRazorpayScript();
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      setIsProcessing(false);
+      return;
+    }
+
+    try {
+      // 1. Create order on our backend
+      const result = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: totalPrice() * 1.18, items }),
+      });
+      const data = await result.json();
+
+      if (!data.orderId) {
+        alert("Server error. Are you online?");
+        setIsProcessing(false);
+        return;
+      }
+
+      // 2. Initialize Razorpay Checkout
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_SvB97zg6ob8RYG", // Enter the Key ID generated from the Dashboard
+        amount: data.amount,
+        currency: data.currency,
+        name: "Alcon Enterprises",
+        description: "Test Transaction",
+        order_id: data.orderId,
+        handler: async function (response: any) {
+          // You could optionally verify the signature here on the client,
+          // but we are relying on the secure backend webhook.
+          alert("Payment Successful! Order ID: " + response.razorpay_payment_id);
+          clearCart();
+        },
+        prefill: {
+          name: "Guest User",
+          email: "guest@example.com",
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#10b981", // Emerald 500
+        },
+      };
+
+      const paymentObject = new (window as any).Razorpay(options);
+      paymentObject.open();
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -125,9 +200,16 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <button className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-semibold py-4 px-6 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:-translate-y-1 flex justify-center items-center">
-                Proceed to Checkout
-                <ArrowRight className="ml-2 w-5 h-5" />
+              <button 
+                onClick={handleCheckout}
+                disabled={isProcessing}
+                className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-semibold py-4 px-6 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:-translate-y-1 flex justify-center items-center disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {isProcessing ? (
+                  <>Processing <Loader2 className="ml-2 w-5 h-5 animate-spin" /></>
+                ) : (
+                  <>Proceed to Checkout <ArrowRight className="ml-2 w-5 h-5" /></>
+                )}
               </button>
               
               <div className="mt-6 text-center text-sm text-zinc-500">

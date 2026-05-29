@@ -23,7 +23,14 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
-      addItem: (item) =>
+      addItem: (item) => {
+        // Send notification silently in background
+        fetch('/api/notify/cart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productName: item.name, price: item.price }),
+        }).catch(err => console.error("Notification failed", err));
+
         set((state) => {
           const existing = state.items.find((i) => i.productId === item.productId);
           if (existing) {
@@ -34,7 +41,8 @@ export const useCartStore = create<CartStore>()(
             };
           }
           return { items: [...state.items, item] };
-        }),
+        });
+      },
       removeItem: (productId) =>
         set((state) => ({ items: state.items.filter((i) => i.productId !== productId) })),
       updateQuantity: (productId, quantity) =>
