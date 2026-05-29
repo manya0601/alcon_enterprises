@@ -8,12 +8,13 @@ import { Menu, X, Search, ShoppingCart, ChevronDown, Phone, Printer, ArrowRight,
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
-import { useUIStore } from "@/store";
+import { useUIStore, useCartStore } from "@/store";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { isMobileMenuOpen, setMobileMenuOpen } = useUIStore();
+  const { totalItems } = useCartStore();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -83,7 +84,7 @@ export function Navbar() {
               <Button variant="ghost" size="icon" className="md:hidden text-slate-text w-9 h-9">
                 <Search className="w-4 h-4" />
               </Button>
-              <Link href="/account" className="hidden sm:inline-flex">
+              <Link href="/dashboard" className="hidden sm:inline-flex">
                 <Button variant="ghost" size="icon" className="text-slate-text hover:text-brand hover:bg-light-sky/50 w-9 h-9 rounded-full">
                   <User className="w-[18px] h-[18px]" />
                 </Button>
@@ -91,9 +92,11 @@ export function Navbar() {
               <Link href="/cart">
                 <Button variant="ghost" size="icon" className="relative text-slate-text hover:text-brand hover:bg-light-sky/50 w-9 h-9 rounded-full">
                   <ShoppingCart className="w-[18px] h-[18px]" />
-                  <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-accent-blue text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-white">
-                    0
-                  </span>
+                  {totalItems() > 0 && (
+                    <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-accent-blue text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-white">
+                      {totalItems()}
+                    </span>
+                  )}
                 </Button>
               </Link>
               <Link href="/contact" className="hidden lg:inline-flex ml-2">
