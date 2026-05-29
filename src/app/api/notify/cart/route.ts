@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: 'Acme <onboarding@resend.dev>', // Resend sandbox default
-      to: ['your-email@example.com'], // Replace with owner email
+      to: ['alconenterprises445@gmail.com'], // Replace with owner email
       subject: '🛒 Item added to Cart!',
       html: `
         <h2>Someone just added an item to their cart!</h2>

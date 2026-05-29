@@ -44,7 +44,7 @@ export async function POST(req: Request) {
       // Send Email Notification to Store Owner
       await resend.emails.send({
         from: 'Acme <onboarding@resend.dev>', // Resend sandbox default
-        to: ['your-email@example.com'], // In production, replace with actual owner email
+        to: ['alconenterprises445@gmail.com'], // In production, replace with actual owner email
         subject: 'New Order Received! 🛍️',
         html: `
           <h2>New Sale Received!</h2>
