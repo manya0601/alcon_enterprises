@@ -63,7 +63,7 @@ export default function AmcPlansPage() {
       <SectionWrapper>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-3xl border border-border-gray p-8 md:p-12 shadow-sm">
-            <h2 className="text-2xl font-bold text-dark-text mb-8 text-center">What's Included in the Enterprise Plan</h2>
+            <h2 className="text-2xl font-bold text-dark-text mb-8 text-center">What&apos;s Included in the Enterprise Plan</h2>
             <div className="grid sm:grid-cols-2 gap-6">
               {[
                 "Unlimited breakdown calls",

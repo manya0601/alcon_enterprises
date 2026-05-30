@@ -58,6 +58,7 @@ export default function CartPage() {
         name: "Alcon Enterprises",
         description: "Test Transaction",
         order_id: data.orderId,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         handler: async function (response: any) {
           // You could optionally verify the signature here on the client,
           // but we are relying on the secure backend webhook.
@@ -74,6 +75,7 @@ export default function CartPage() {
         },
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const paymentObject = new (window as any).Razorpay(options);
       paymentObject.open();
     } catch (error) {
@@ -102,7 +104,7 @@ export default function CartPage() {
           </div>
           <h2 className="text-2xl font-semibold mb-4 text-white">Your cart is empty</h2>
           <p className="text-zinc-400 mb-8 max-w-md mx-auto">
-            Looks like you haven't added any premium printing supplies to your cart yet.
+            Looks like you haven&apos;t added any premium printing supplies to your cart yet.
           </p>
           <Link 
             href="/buy" 
