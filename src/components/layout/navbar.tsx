@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, Search, ShoppingCart, ChevronDown, Phone, Printer, ArrowRight, User, Mail, MapPin, Clock } from "lucide-react";
@@ -57,14 +58,8 @@ export function Navbar() {
           <div className="flex items-center justify-between h-16 md:h-20 gap-4 md:gap-8">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 shrink-0">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand to-accent-blue flex items-center justify-center shadow-sm">
-                <Printer className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="text-[18px] font-bold tracking-tight text-dark-text">Alcon</span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-accent-blue font-semibold">Enterprise</span>
-              </div>
+            <Link href="/" className="flex items-center shrink-0">
+              <Image src="/logo.png" alt="Alcon Enterprise" width={140} height={40} className="h-10 w-auto object-contain" />
             </Link>
 
             {/* Search Bar - Hidden on mobile */}
@@ -180,10 +175,7 @@ export function Navbar() {
               <div className="p-5">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
-                      <Printer className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="text-[16px] font-bold text-dark-text">Alcon</span>
+                    <Image src="/logo.png" alt="Alcon Enterprise" width={100} height={30} className="h-8 w-auto object-contain" />
                   </div>
                   <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-soft-gray" onClick={() => setMobileMenuOpen(false)}>
                     <X className="w-4 h-4" />

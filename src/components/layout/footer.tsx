@@ -52,14 +52,8 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-7 h-7 rounded-md bg-white flex items-center justify-center">
-                <Printer className="w-3.5 h-3.5 text-brand" />
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="text-[14px] font-bold">Alcon</span>
-                <span className="text-[8px] uppercase tracking-[0.2em] text-white/40">Enterprise</span>
-              </div>
+            <Link href="/" className="flex items-center shrink-0 mb-4">
+              <img src="/logo.png" alt="Alcon Enterprise" className="h-10 w-auto object-contain brightness-0 invert" />
             </Link>
             <p className="text-[12px] text-white/50 leading-relaxed mb-4 max-w-xs">
               India&apos;s trusted printer &amp; enterprise hardware solutions since 1999.
