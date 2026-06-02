@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, MessageCircle, Clock, Calendar, Building2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RENTAL_EQUIPMENT } from "@/data/site-data";
@@ -88,13 +89,14 @@ export default function RentPage() {
             {RENTAL_EQUIPMENT.map((eq, i) => (
               <FadeIn key={eq.id} delay={i * 0.05}>
                 <div className="bg-white rounded-2xl border border-border-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:border-accent-blue/30 transition-all duration-300 flex flex-col h-full group overflow-hidden">
-                  <div className="bg-soft-gray/50 rounded-t-2xl p-8 flex items-center justify-center aspect-[4/3] group-hover:bg-light-sky/20 transition-colors">
-                    <div className="w-24 h-24 bg-white rounded-2xl shadow-sm border border-border-gray flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                      <svg viewBox="0 0 48 48" className="w-12 h-12 text-brand/30" fill="currentColor">
-                        <rect x="10" y="20" width="28" height="14" rx="2" />
-                        <rect x="14" y="10" width="20" height="12" rx="2" opacity="0.6" />
-                        <rect x="12" y="33" width="24" height="7" rx="1.5" opacity="0.4" />
-                      </svg>
+                  <div className="bg-soft-gray/50 rounded-t-2xl p-8 flex items-center justify-center aspect-[4/3] group-hover:bg-light-sky/20 transition-colors relative">
+                    <div className="w-full h-full relative group-hover:scale-105 transition-transform duration-500">
+                      <Image 
+                        src={eq.image} 
+                        alt={eq.name} 
+                        fill 
+                        className="object-contain drop-shadow-sm mix-blend-multiply" 
+                      />
                     </div>
                   </div>
                   <div className="p-5 flex-1 flex flex-col">
