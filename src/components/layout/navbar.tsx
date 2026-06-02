@@ -64,7 +64,7 @@ export function Navbar() {
                 alt="Alcon Enterprise" 
                 width={300} 
                 height={100} 
-                className="w-auto h-10 md:h-12 object-contain mix-blend-multiply" 
+                className="w-40 md:w-64 h-auto object-contain mix-blend-multiply" 
                 priority
               />
             </Link>
@@ -181,13 +181,13 @@ export function Navbar() {
             >
               <div className="p-5">
                 <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2 h-10">
+                  <div className="flex items-center gap-2">
                     <Image 
                       src="/logo.png" 
                       alt="Alcon Enterprise" 
                       width={200} 
                       height={60} 
-                      className="w-auto h-full object-contain mix-blend-multiply" 
+                      className="w-40 h-auto object-contain mix-blend-multiply" 
                     />
                   </div>
                   <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-soft-gray" onClick={() => setMobileMenuOpen(false)}>
