@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, ArrowRight, Printer, CalendarClock, Handshake } from "lucide-react";
+import Image from "next/image";
+import { Building2, ArrowRight, CalendarClock, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/shared/section-wrapper";
 import { RENTAL_EQUIPMENT } from "@/data/site-data";
@@ -66,8 +67,8 @@ export default function PrinterRentalsPage() {
             {RENTAL_EQUIPMENT.slice(0, 3).map((eq, i) => (
               <FadeIn key={eq.id} delay={i * 0.1}>
                 <div className="bg-soft-gray rounded-3xl border border-border-gray p-6 flex flex-col h-full hover:shadow-md transition-all group">
-                  <div className="bg-white rounded-2xl p-6 flex items-center justify-center aspect-[4/3] mb-6 border border-border-gray/50 group-hover:border-brand/30 transition-colors">
-                    <Printer className="w-12 h-12 text-brand/20 group-hover:scale-110 transition-transform" />
+                  <div className="bg-white rounded-2xl p-6 flex items-center justify-center aspect-[4/3] mb-6 border border-border-gray/50 group-hover:border-brand/30 transition-colors relative overflow-hidden">
+                    <Image src={eq.image} alt={eq.name} fill className="object-contain p-4 group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <h3 className="text-[16px] font-bold text-dark-text mb-2">{eq.name}</h3>
                   <p className="text-[13px] text-slate-text mb-4 line-clamp-2">{eq.description}</p>
