@@ -8,7 +8,7 @@ export default function OnSiteRepairPage() {
     <>
       <section className="bg-white border-b border-border-gray relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-accent-blue/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-10 md:pt-6 md:pb-16 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             {/* Left Column: Hero Content & Brands */}
             <FadeIn>
