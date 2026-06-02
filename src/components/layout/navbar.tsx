@@ -58,13 +58,13 @@ export function Navbar() {
           <div className="flex items-center justify-between h-16 md:h-20 gap-4 md:gap-8">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center shrink-0 h-full py-2">
+            <Link href="/" className="flex items-center shrink-0 h-full py-1 overflow-visible">
               <Image 
                 src="/logo.png" 
                 alt="Alcon Enterprise" 
-                width={240} 
-                height={80} 
-                className="w-auto h-8 md:h-12 object-contain mix-blend-multiply" 
+                width={300} 
+                height={100} 
+                className="w-auto h-12 md:h-16 object-contain mix-blend-multiply scale-125 md:scale-150 origin-left" 
                 priority
               />
             </Link>
@@ -181,13 +181,13 @@ export function Navbar() {
             >
               <div className="p-5">
                 <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2 h-10">
+                  <div className="flex items-center gap-2 h-12 overflow-visible">
                     <Image 
                       src="/logo.png" 
                       alt="Alcon Enterprise" 
                       width={200} 
                       height={60} 
-                      className="w-auto h-full object-contain mix-blend-multiply" 
+                      className="w-auto h-full object-contain mix-blend-multiply scale-125 origin-left" 
                     />
                   </div>
                   <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-soft-gray" onClick={() => setMobileMenuOpen(false)}>
