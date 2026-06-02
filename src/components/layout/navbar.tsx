@@ -59,7 +59,7 @@ export function Navbar() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
-              <Image src="/logo.png" alt="Alcon Enterprise" width={140} height={40} className="h-10 w-auto object-contain" />
+              <Image src="/logo.png" alt="Alcon Enterprise" width={240} height={80} className="w-36 md:w-52 h-auto object-contain" />
             </Link>
 
             {/* Search Bar - Hidden on mobile */}
@@ -175,7 +175,7 @@ export function Navbar() {
               <div className="p-5">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-2">
-                    <Image src="/logo.png" alt="Alcon Enterprise" width={100} height={30} className="h-8 w-auto object-contain" />
+                    <Image src="/logo.png" alt="Alcon Enterprise" width={200} height={60} className="w-32 h-auto object-contain" />
                   </div>
                   <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-soft-gray" onClick={() => setMobileMenuOpen(false)}>
                     <X className="w-4 h-4" />
