@@ -62,24 +62,6 @@ const services = [
 export default function ServicesHubPage() {
   return (
     <>
-      {/* Header */}
-      <section className="bg-white border-b border-border-gray relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-blue/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10 text-center">
-          <FadeIn>
-            <span className="inline-block px-4 py-1.5 rounded-full text-[12px] font-bold tracking-wider uppercase bg-light-sky text-accent-blue border border-accent-blue/20 mb-6">
-              Our Expertise
-            </span>
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-dark-text mb-6">
-              Enterprise <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-accent-blue">Printer Services</span>
-            </h1>
-            <p className="text-slate-text text-[15px] md:text-[16px] max-w-2xl mx-auto mb-10 leading-relaxed">
-              From emergency on-site repairs to complete fleet management, Alcon Enterprise provides reliable, professional support for your business printing infrastructure.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
-
       {/* Services Grid */}
       <section className="bg-soft-gray py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
