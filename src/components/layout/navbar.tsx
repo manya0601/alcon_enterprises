@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, Search, ShoppingCart, ChevronDown, Phone, Printer, ArrowRight, User, Mail, MapPin, Clock } from "lucide-react";
+import { Menu, X, Search, ShoppingCart, ChevronDown, Phone, Printer, ArrowRight, User, Mail, MapPin, Clock, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { useUIStore, useCartStore } from "@/store";
+import { createClient } from "@/utils/supabase/client";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -17,6 +18,10 @@ export function Navbar() {
   const { isMobileMenuOpen, setMobileMenuOpen } = useUIStore();
   const { totalItems } = useCartStore();
   const pathname = usePathname();
+  const router = useRouter();
+  const supabase = createClient();
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -27,6 +32,37 @@ export function Navbar() {
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname, setMobileMenuOpen]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      if (user) {
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+        setProfile(profile);
+      }
+    };
+    fetchUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const currentUser = session?.user || null;
+      setUser(currentUser);
+      if (currentUser) {
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
+        setProfile(profile);
+      } else {
+        setProfile(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <>
@@ -86,11 +122,50 @@ export function Navbar() {
               <Button variant="ghost" size="icon" className="md:hidden text-slate-text w-9 h-9">
                 <Search className="w-4 h-4" />
               </Button>
-              <Link href="/dashboard" className="hidden sm:inline-flex">
-                <Button variant="ghost" size="icon" className="text-slate-text hover:text-brand hover:bg-light-sky/50 w-9 h-9 rounded-full">
-                  <User className="w-[18px] h-[18px]" />
-                </Button>
-              </Link>
+              
+              {user ? (
+                <div 
+                  className="hidden sm:flex relative items-center cursor-pointer"
+                  onMouseEnter={() => setActiveDropdown('user')}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <Link href="/dashboard" className="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-soft-gray transition-colors">
+                    <div className="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs font-bold shrink-0">
+                      {(profile?.full_name || profile?.username || user.email || 'U').charAt(0).toUpperCase()}
+                    </div>
+                  </Link>
+
+                  <AnimatePresence>
+                    {activeDropdown === 'user' && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 4 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full right-0 mt-1 w-56 bg-white rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-border-gray p-2 z-50"
+                      >
+                        <div className="px-3 py-2 border-b border-border-gray mb-1">
+                          <p className="text-sm font-bold text-dark-text truncate">{profile?.full_name || profile?.username || 'User'}</p>
+                          <p className="text-xs text-slate-text truncate">{user.email}</p>
+                        </div>
+                        <Link href="/dashboard" className="flex items-center gap-2 px-3 py-2 text-sm text-slate-text hover:bg-soft-gray hover:text-brand rounded-lg transition-colors">
+                          <User className="w-4 h-4" /> Dashboard
+                        </Link>
+                        <button onClick={handleSignOut} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left mt-1">
+                          <LogOut className="w-4 h-4" /> Sign Out
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link href="/login" className="hidden sm:inline-flex">
+                  <Button variant="ghost" className="text-slate-text hover:text-brand hover:bg-light-sky/50 rounded-full font-bold">
+                    Sign In
+                  </Button>
+                </Link>
+              )}
+
               <Link href="/cart">
                 <Button variant="ghost" size="icon" className="relative text-slate-text hover:text-brand hover:bg-light-sky/50 w-9 h-9 rounded-full">
                   <ShoppingCart className="w-[18px] h-[18px]" />

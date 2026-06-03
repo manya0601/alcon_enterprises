@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Package, TrendingUp, CreditCard, ArrowRight, ExternalLink } from "lucide-react";
+import { Package, TrendingUp, CreditCard, ArrowRight, ExternalLink, User } from "lucide-react";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/client";
 
 const mockOrders = [
   { id: "ORD-2026-894", date: "May 25, 2026", status: "Delivered", total: "₹4,500", items: 3 },
@@ -11,12 +13,43 @@ const mockOrders = [
 ];
 
 export default function DashboardOverview() {
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      if (user) {
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+        setProfile(profile);
+      }
+    };
+    fetchUser();
+  }, [supabase]);
+
   return (
     <div>
-      <h1 className="text-3xl font-bold text-white mb-8">Dashboard Overview</h1>
+      <h1 className="text-3xl font-bold text-white mb-2">Welcome, {profile?.full_name || profile?.username || user?.email || 'Guest'}</h1>
+      <p className="text-zinc-400 mb-8">User ID: <span className="font-mono text-xs">{user?.id || '...'}</span></p>
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.0 }}
+          className="bg-zinc-800/40 border border-zinc-700/50 rounded-2xl p-6 relative overflow-hidden group col-span-1 md:col-span-1"
+        >
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <User className="w-16 h-16 text-brand" />
+          </div>
+          <p className="text-zinc-400 text-sm font-medium mb-2">Username</p>
+          <p className="text-2xl font-bold text-white mb-2 truncate">@{profile?.username || 'user'}</p>
+          <p className="text-brand text-sm">Verified Account</p>
+        </motion.div>
+
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -27,7 +60,7 @@ export default function DashboardOverview() {
             <Package className="w-16 h-16 text-emerald-400" />
           </div>
           <p className="text-zinc-400 text-sm font-medium mb-2">Total Orders</p>
-          <p className="text-4xl font-bold text-white mb-2">12</p>
+          <p className="text-3xl font-bold text-white mb-2">12</p>
           <p className="text-emerald-400 text-sm flex items-center gap-1">
             <TrendingUp className="w-4 h-4" /> +2 this month
           </p>
@@ -42,9 +75,9 @@ export default function DashboardOverview() {
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <CreditCard className="w-16 h-16 text-blue-400" />
           </div>
-          <p className="text-zinc-400 text-sm font-medium mb-2">Active Subscriptions</p>
-          <p className="text-4xl font-bold text-white mb-2">1</p>
-          <p className="text-blue-400 text-sm">Cartridge Auto-Refill</p>
+          <p className="text-zinc-400 text-sm font-medium mb-2">Subscriptions</p>
+          <p className="text-3xl font-bold text-white mb-2">1</p>
+          <p className="text-blue-400 text-sm">Auto-Refill</p>
         </motion.div>
 
         <motion.div 
@@ -57,8 +90,8 @@ export default function DashboardOverview() {
             <TrendingUp className="w-16 h-16 text-purple-400" />
           </div>
           <p className="text-zinc-400 text-sm font-medium mb-2">Reward Points</p>
-          <p className="text-4xl font-bold text-white mb-2">1,250</p>
-          <p className="text-purple-400 text-sm">₹125 value available</p>
+          <p className="text-3xl font-bold text-white mb-2">1,250</p>
+          <p className="text-purple-400 text-sm">₹125 value</p>
         </motion.div>
       </div>
 
