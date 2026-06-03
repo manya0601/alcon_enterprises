@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, Mail, MapPin, Clock, MessageCircle, Send, ChevronDown } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send, ChevronDown, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,6 +24,8 @@ const faqs = [
 
 export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   return (
     <>
@@ -86,31 +88,68 @@ export default function ContactPage() {
                 <h2 className="text-[20px] font-bold text-dark-text mb-2">Send us a message</h2>
                 <p className="text-[14px] text-slate-text mb-8">Fill out the form below and we'll get back to you shortly.</p>
                 
-                <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-5" onSubmit={async (e) => {
+                  e.preventDefault();
+                  setIsSubmitting(true);
+                  const formData = new FormData(e.currentTarget);
+                  try {
+                    const res = await fetch("/api/contact", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        fullName: formData.get("fullName"),
+                        phone: formData.get("phone"),
+                        email: formData.get("email"),
+                        company: formData.get("company"),
+                        message: formData.get("message"),
+                      }),
+                    });
+                    if (res.ok) {
+                      setSuccess(true);
+                      (e.target as HTMLFormElement).reset();
+                      setTimeout(() => setSuccess(false), 5000);
+                    } else {
+                      alert("Failed to send message. Please try again.");
+                    }
+                  } catch (err) {
+                    alert("Network error. Please try again.");
+                  } finally {
+                    setIsSubmitting(false);
+                  }
+                }}>
+                  {success && (
+                    <div className="bg-success/10 text-success border border-success/20 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5" /> Message sent successfully! We will contact you soon.
+                    </div>
+                  )}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-[13px] font-bold text-dark-text mb-1.5 block">Full Name</label>
-                      <Input placeholder="Your name" className="border-border-gray h-11 rounded-xl" />
+                      <Input name="fullName" required placeholder="Your name" className="border-border-gray h-11 rounded-xl" />
                     </div>
                     <div>
                       <label className="text-[13px] font-bold text-dark-text mb-1.5 block">Phone Number</label>
-                      <Input placeholder="Phone number" className="border-border-gray h-11 rounded-xl" />
+                      <Input name="phone" required placeholder="Phone number" className="border-border-gray h-11 rounded-xl" />
                     </div>
                   </div>
                   <div>
                     <label className="text-[13px] font-bold text-dark-text mb-1.5 block">Email Address</label>
-                    <Input type="email" placeholder="you@company.com" className="border-border-gray h-11 rounded-xl" />
+                    <Input name="email" type="email" required placeholder="you@company.com" className="border-border-gray h-11 rounded-xl" />
                   </div>
                   <div>
                     <label className="text-[13px] font-bold text-dark-text mb-1.5 block">Company Name (Optional)</label>
-                    <Input placeholder="Your company name" className="border-border-gray h-11 rounded-xl" />
+                    <Input name="company" placeholder="Your company name" className="border-border-gray h-11 rounded-xl" />
                   </div>
                   <div>
                     <label className="text-[13px] font-bold text-dark-text mb-1.5 block">Message</label>
-                    <Textarea placeholder="How can we help you?" className="border-border-gray rounded-xl resize-none" rows={5} />
+                    <Textarea name="message" required placeholder="How can we help you?" className="border-border-gray rounded-xl resize-none" rows={5} />
                   </div>
-                  <Button className="w-full bg-[#02367B] hover:bg-[#012350] text-white rounded-xl h-12 font-bold gap-2 mt-2">
-                    <Send className="w-4 h-4" /> Send Message
+                  <Button disabled={isSubmitting} type="submit" className="w-full bg-[#02367B] hover:bg-[#012350] text-white rounded-xl h-12 font-bold gap-2 mt-2 disabled:opacity-70 transition-all">
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">Sending...</span>
+                    ) : (
+                      <><Send className="w-4 h-4" /> Send Message</>
+                    )}
                   </Button>
                 </form>
               </div>
