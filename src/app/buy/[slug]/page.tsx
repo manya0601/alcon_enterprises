@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronRight, Star, CheckCircle2, ShoppingCart, Truck, Shield, AlertCircle, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TRENDING_PRODUCTS } from "@/data/products";
+import { AddToCartGroup } from "@/components/products/AddToCartGroup";
 
 // Generate static params for all known products
 export function generateStaticParams() {
@@ -117,14 +118,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-8 pb-8 border-b border-border-gray">
-                <Button className="flex-1 bg-brand hover:bg-brand-dark text-white rounded-xl h-14 text-base font-bold shadow-lg shadow-brand/20 transition-all hover:-translate-y-0.5">
-                  <ShoppingCart className="w-5 h-5 mr-2" /> Add to Cart
-                </Button>
-                <Button variant="outline" className="flex-1 bg-white hover:bg-soft-gray border-2 border-border-gray text-dark-text rounded-xl h-14 text-base font-bold transition-all hover:-translate-y-0.5">
-                  Buy Now
-                </Button>
-              </div>
+              <AddToCartGroup product={{
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.images[0]
+              }} />
 
               {/* Features List */}
               {product.features && product.features.length > 0 && (

@@ -6,9 +6,11 @@ import { Star, ShoppingCart, ArrowRight, TrendingUp, CheckCircle2 } from "lucide
 import { Button } from "@/components/ui/button";
 import { SectionHeader, FadeIn } from "@/components/shared/section-wrapper";
 import { TRENDING_PRODUCTS } from "@/data/products";
+import { useCartStore } from "@/store";
 
 export function FeaturedProducts() {
   const products = TRENDING_PRODUCTS.slice(0, 8);
+  const addItem = useCartStore((state) => state.addItem);
 
   return (
     <section className="bg-white py-14 md:py-20 border-b border-border-gray">
@@ -80,7 +82,20 @@ export function FeaturedProducts() {
                         {p.comparePrice && <span className="text-[12px] text-muted-foreground line-through font-medium mb-1">₹{p.comparePrice.toLocaleString()}</span>}
                       </div>
 
-                      <Button className="w-full gap-2 bg-white text-brand border border-brand/20 hover:bg-brand hover:text-white hover:border-brand rounded-xl text-[13px] font-bold h-10 shadow-sm transition-all group-hover:bg-brand group-hover:text-white group-hover:shadow-[0_4px_12px_rgba(2,54,123,0.2)]">
+                      <Button 
+                        className="w-full gap-2 bg-white text-brand border border-brand/20 hover:bg-brand hover:text-white hover:border-brand rounded-xl text-[13px] font-bold h-10 shadow-sm transition-all group-hover:bg-brand group-hover:text-white group-hover:shadow-[0_4px_12px_rgba(2,54,123,0.2)]"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addItem({
+                            productId: p.id,
+                            name: p.name,
+                            price: p.price,
+                            quantity: 1,
+                            image: p.images[0]
+                          });
+                          alert("Added to cart!");
+                        }}
+                      >
                         <ShoppingCart className="w-4 h-4" /> Add to Cart
                       </Button>
                     </div>

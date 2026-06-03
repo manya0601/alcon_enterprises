@@ -8,10 +8,12 @@ import { Input } from "@/components/ui/input";
 import { TRENDING_PRODUCTS, PRODUCT_CATEGORIES } from "@/data/products";
 import { FadeIn } from "@/components/shared/section-wrapper";
 import { useState } from "react";
+import { useCartStore } from "@/store";
 
 export default function BuyPage() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const addItem = useCartStore((state) => state.addItem);
 
   const filtered = TRENDING_PRODUCTS.filter((p) => {
     const matchCat = activeCategory === "all" || p.category.slug === activeCategory;
@@ -119,7 +121,20 @@ export default function BuyPage() {
                                 {p.comparePrice && <span className="text-[13px] text-muted-foreground line-through font-medium mb-1">₹{p.comparePrice.toLocaleString()}</span>}
                               </div>
 
-                              <Button className="w-full gap-2 bg-white text-brand border border-brand/20 hover:bg-brand hover:text-white hover:border-brand rounded-xl text-[14px] font-bold h-11 shadow-sm transition-all group-hover:bg-brand group-hover:text-white">
+                              <Button 
+                                className="w-full gap-2 bg-white text-brand border border-brand/20 hover:bg-brand hover:text-white hover:border-brand rounded-xl text-[14px] font-bold h-11 shadow-sm transition-all group-hover:bg-brand group-hover:text-white"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  addItem({
+                                    productId: p.id,
+                                    name: p.name,
+                                    price: p.price,
+                                    quantity: 1,
+                                    image: p.images[0]
+                                  });
+                                  alert("Added to cart!");
+                                }}
+                              >
                                 <ShoppingCart className="w-4 h-4" /> Add to Cart
                               </Button>
                             </div>
