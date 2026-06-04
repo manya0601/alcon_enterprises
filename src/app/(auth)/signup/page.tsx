@@ -6,33 +6,33 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
-import { ArrowLeft, Loader2, Mail, Lock, User } from "lucide-react";
+import { ArrowLeft, Loader2, Phone, KeyRound, User } from "lucide-react";
 
 export default function SignupPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
+  const [otp, setOtp] = useState("");
+  const [step, setStep] = useState<"PHONE" | "OTP">("PHONE");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const router = useRouter();
   const supabase = createClient();
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
+    const formattedPhone = phone.startsWith("+") ? phone : `+91${phone}`;
+
+    const { error } = await supabase.auth.signInWithOtp({
+      phone: formattedPhone,
       options: {
         data: {
           username: username,
           full_name: fullName,
         },
-        emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
 
@@ -42,14 +42,31 @@ export default function SignupPage() {
       return;
     }
 
-    setSuccess(true);
+    setStep("OTP");
     setLoading(false);
-    
-    // Automatically redirect after a few seconds if no email verification is required by Supabase project settings
-    setTimeout(() => {
-      router.push("/dashboard");
-      router.refresh();
-    }, 3000);
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const formattedPhone = phone.startsWith("+") ? phone : `+91${phone}`;
+
+    const { error } = await supabase.auth.verifyOtp({
+      phone: formattedPhone,
+      token: otp,
+      type: "sms",
+    });
+
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+      return;
+    }
+
+    router.push("/dashboard");
+    router.refresh();
   };
 
   return (
@@ -72,17 +89,8 @@ export default function SignupPage() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-[0_8px_30px_rgba(0,0,0,0.04)] sm:rounded-3xl sm:px-10 border border-border-gray">
           
-          {success ? (
-            <div className="text-center py-8">
-              <div className="w-16 h-16 bg-success/10 text-success rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-              </div>
-              <h3 className="text-xl font-bold text-dark-text mb-2">Account created!</h3>
-              <p className="text-slate-text text-sm">You are being redirected to your dashboard...</p>
-              <p className="text-xs text-muted-foreground mt-4">(If email confirmation is required, please check your inbox)</p>
-            </div>
-          ) : (
-            <form className="space-y-5" onSubmit={handleSignup}>
+          {step === "PHONE" ? (
+            <form className="space-y-5" onSubmit={handleSendOtp}>
               {error && (
                 <div className="bg-red-50 text-red-600 border border-red-200 px-4 py-3 rounded-xl text-sm font-medium">
                   {error}
@@ -129,56 +137,85 @@ export default function SignupPage() {
 
               <div>
                 <label className="block text-[13px] font-bold text-dark-text mb-1.5">
-                  Email address
+                  Phone Number
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-muted-foreground" />
+                    <Phone className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <Input
-                    type="email"
+                    type="tel"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     className="pl-10 h-12 rounded-xl border-border-gray"
-                    placeholder="you@company.com"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[13px] font-bold text-dark-text mb-1.5">
-                  Password
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <Input
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 h-12 rounded-xl border-border-gray"
-                    placeholder="••••••••"
-                    minLength={6}
+                    placeholder="9876543210"
                   />
                 </div>
               </div>
 
               <Button
                 type="submit"
-                disabled={loading}
+                disabled={loading || phone.length < 10}
                 className="w-full h-12 rounded-xl bg-brand hover:bg-brand-dark text-white font-bold mt-2"
               >
                 {loading ? (
-                  <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Creating account...</>
+                  <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Sending OTP...</>
                 ) : (
-                  "Create account"
+                  "Create account via OTP"
+                )}
+              </Button>
+            </form>
+          ) : (
+            <form className="space-y-6" onSubmit={handleVerifyOtp}>
+              {error && (
+                <div className="bg-red-50 text-red-600 border border-red-200 px-4 py-3 rounded-xl text-sm font-medium">
+                  {error}
+                </div>
+              )}
+              
+              <div className="bg-soft-gray p-4 rounded-xl mb-6 flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-slate-text">Code sent to</p>
+                  <p className="font-bold text-dark-text">{phone.startsWith("+") ? phone : `+91 ${phone}`}</p>
+                </div>
+                <button type="button" onClick={() => setStep("PHONE")} className="text-sm text-brand font-bold hover:underline">Edit</button>
+              </div>
+
+              <div>
+                <label className="block text-[13px] font-bold text-dark-text mb-1.5">
+                  Enter 6-digit OTP
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <KeyRound className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                  <Input
+                    type="text"
+                    required
+                    maxLength={6}
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="pl-10 h-12 rounded-xl border-border-gray tracking-[0.5em] font-bold text-lg"
+                    placeholder="••••••"
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={loading || otp.length < 6}
+                className="w-full h-12 rounded-xl bg-brand hover:bg-brand-dark text-white font-bold"
+              >
+                {loading ? (
+                  <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Verifying...</>
+                ) : (
+                  "Verify & Complete Setup"
                 )}
               </Button>
             </form>
           )}
+
         </div>
       </div>
     </div>

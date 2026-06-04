@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { createClient } from "@/utils/supabase/client";
 
 interface CartItem {
   productId: string;
@@ -11,45 +12,105 @@ interface CartItem {
 
 interface CartStore {
   items: CartItem[];
-  addItem: (item: CartItem) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  clearCart: () => void;
+  userId: string | null;
+  setUserId: (id: string | null) => void;
+  addItem: (item: CartItem) => Promise<void>;
+  removeItem: (productId: string) => Promise<void>;
+  updateQuantity: (productId: string, quantity: number) => Promise<void>;
+  clearCart: () => Promise<void>;
   totalItems: () => number;
   totalPrice: () => number;
+  fetchCartFromDB: () => Promise<void>;
 }
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
-      addItem: (item) => {
-        // Send notification silently in background
-        fetch('/api/notify/cart', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ productName: item.name, price: item.price }),
-        }).catch(err => console.error("Notification failed", err));
-
-        set((state) => {
-          const existing = state.items.find((i) => i.productId === item.productId);
-          if (existing) {
-            return {
-              items: state.items.map((i) =>
-                i.productId === item.productId ? { ...i, quantity: i.quantity + item.quantity } : i
-              ),
-            };
-          }
-          return { items: [...state.items, item] };
-        });
+      userId: null,
+      setUserId: (id) => {
+        set({ userId: id });
+        if (id) {
+          get().fetchCartFromDB();
+        }
       },
-      removeItem: (productId) =>
-        set((state) => ({ items: state.items.filter((i) => i.productId !== productId) })),
-      updateQuantity: (productId, quantity) =>
-        set((state) => ({
-          items: state.items.map((i) => (i.productId === productId ? { ...i, quantity } : i)),
-        })),
-      clearCart: () => set({ items: [] }),
+      fetchCartFromDB: async () => {
+        const { userId } = get();
+        if (!userId) return;
+        const supabase = createClient();
+        const { data } = await supabase.from('cart_items').select('*').eq('user_id', userId);
+        if (data && data.length > 0) {
+          const dbItems = data.map(item => ({
+            productId: item.product_id,
+            name: item.name,
+            price: Number(item.price),
+            quantity: item.quantity,
+            image: item.image || "/images/products/toner-1.png"
+          }));
+          set({ items: dbItems });
+        }
+      },
+      addItem: async (item) => {
+        const { userId, items } = get();
+        const existing = items.find((i) => i.productId === item.productId);
+        
+        let newItems;
+        if (existing) {
+          newItems = items.map((i) =>
+            i.productId === item.productId ? { ...i, quantity: i.quantity + item.quantity } : i
+          );
+        } else {
+          newItems = [...items, item];
+        }
+
+        set({ items: newItems });
+
+        if (userId) {
+          const supabase = createClient();
+          if (existing) {
+            await supabase.from('cart_items').update({ quantity: existing.quantity + item.quantity }).eq('user_id', userId).eq('product_id', item.productId);
+          } else {
+            await supabase.from('cart_items').insert({
+              user_id: userId,
+              product_id: item.productId,
+              name: item.name,
+              price: item.price,
+              quantity: item.quantity,
+              image: item.image
+            });
+          }
+        }
+      },
+      removeItem: async (productId) => {
+        const { userId, items } = get();
+        set({ items: items.filter((i) => i.productId !== productId) });
+
+        if (userId) {
+          const supabase = createClient();
+          await supabase.from('cart_items').delete().eq('user_id', userId).eq('product_id', productId);
+        }
+      },
+      updateQuantity: async (productId, quantity) => {
+        if (quantity < 1) return;
+        const { userId, items } = get();
+        set({
+          items: items.map((i) => (i.productId === productId ? { ...i, quantity } : i)),
+        });
+
+        if (userId) {
+          const supabase = createClient();
+          await supabase.from('cart_items').update({ quantity }).eq('user_id', userId).eq('product_id', productId);
+        }
+      },
+      clearCart: async () => {
+        const { userId } = get();
+        set({ items: [] });
+        
+        if (userId) {
+          const supabase = createClient();
+          await supabase.from('cart_items').delete().eq('user_id', userId);
+        }
+      },
       totalItems: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
       totalPrice: () => get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
     }),

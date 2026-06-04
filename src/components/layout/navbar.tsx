@@ -38,8 +38,11 @@ export function Navbar() {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
       if (user) {
+        useCartStore.getState().setUserId(user.id);
         const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
         setProfile(profile);
+      } else {
+        useCartStore.getState().setUserId(null);
       }
     };
     fetchUser();
@@ -48,9 +51,11 @@ export function Navbar() {
       const currentUser = session?.user || null;
       setUser(currentUser);
       if (currentUser) {
+        useCartStore.getState().setUserId(currentUser.id);
         const { data: profile } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
         setProfile(profile);
       } else {
+        useCartStore.getState().setUserId(null);
         setProfile(null);
       }
     });

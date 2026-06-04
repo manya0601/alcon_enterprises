@@ -87,140 +87,144 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <h1 className="text-4xl font-bold mb-10 text-white flex items-center">
-        <ShoppingBag className="w-10 h-10 mr-4 text-emerald-400" />
-        Your Shopping Cart
-      </h1>
+    <div className="min-h-screen bg-soft-gray pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-10 text-dark-text flex items-center">
+          <ShoppingBag className="w-10 h-10 mr-4 text-brand" />
+          Your Shopping Cart
+        </h1>
 
-      {items.length === 0 ? (
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-zinc-900/40 backdrop-blur-xl border border-zinc-800 rounded-3xl p-12 text-center"
-        >
-          <div className="bg-zinc-800/50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-            <ShoppingBag className="w-12 h-12 text-zinc-400" />
-          </div>
-          <h2 className="text-2xl font-semibold mb-4 text-white">Your cart is empty</h2>
-          <p className="text-zinc-400 mb-8 max-w-md mx-auto">
-            Looks like you haven&apos;t added any premium printing supplies to your cart yet.
-          </p>
-          <Link 
-            href="/buy" 
-            className="inline-flex items-center bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:-translate-y-1"
+        {items.length === 0 ? (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white border border-border-gray rounded-3xl p-12 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
           >
-            Continue Shopping
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Link>
-        </motion.div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-4">
-            <AnimatePresence>
-              {items.map((item) => (
-                <motion.div
-                  key={item.productId}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95, height: 0, marginBottom: 0, padding: 0 }}
-                  className="bg-zinc-900/40 backdrop-blur-xl border border-zinc-800 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6 overflow-hidden"
+            <div className="bg-soft-gray w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+              <ShoppingBag className="w-12 h-12 text-slate-text" />
+            </div>
+            <h2 className="text-2xl font-bold mb-4 text-dark-text">Your cart is empty</h2>
+            <p className="text-slate-text mb-8 max-w-md mx-auto">
+              Looks like you haven&apos;t added any premium printing supplies to your cart yet.
+            </p>
+            <Link 
+              href="/buy" 
+              className="inline-flex items-center bg-brand hover:bg-brand-dark text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1"
+            >
+              Continue Shopping
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Link>
+          </motion.div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-4">
+              <AnimatePresence>
+                {items.map((item) => (
+                  <motion.div
+                    key={item.productId}
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95, height: 0, marginBottom: 0, padding: 0 }}
+                    className="bg-white border border-border-gray rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6 overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
+                  >
+                    <div className="relative w-24 h-24 shrink-0 bg-soft-gray rounded-xl p-2 flex items-center justify-center">
+                      <Image
+                        src={item.image || "/images/products/toner-1.png"}
+                        alt={item.name}
+                        fill
+                        className="object-contain p-2 mix-blend-multiply"
+                      />
+                    </div>
+                    
+                    <div className="flex-grow">
+                      <Link href={`/buy/${item.productId}`} className="text-lg font-bold text-dark-text hover:text-brand transition-colors line-clamp-2 mb-2">
+                        {item.name}
+                      </Link>
+                      <div className="text-brand font-bold text-lg">
+                        ₹{item.price.toLocaleString()}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-start mt-4 sm:mt-0">
+                      <div className="flex items-center bg-soft-gray rounded-full p-1 border border-border-gray">
+                        <button
+                          onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                          className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white text-slate-text hover:text-dark-text transition-colors"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="w-10 text-center font-bold text-dark-text">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                          className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white text-slate-text hover:text-dark-text transition-colors"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
+                      
+                      <button
+                        onClick={() => removeItem(item.productId)}
+                        className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                        aria-label="Remove item"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            <div className="lg:col-span-1">
+              <div className="bg-white border border-border-gray rounded-3xl p-6 sm:p-8 sticky top-32 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+                <h3 className="text-xl font-bold mb-6 text-dark-text">Order Summary</h3>
+                
+                <div className="space-y-4 mb-6">
+                  <div className="flex justify-between text-slate-text">
+                    <span>Subtotal</span>
+                    <span className="font-medium text-dark-text">₹{totalPrice().toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-text">
+                    <span>Shipping</span>
+                    <span className="text-brand font-medium">Free</span>
+                  </div>
+                  <div className="flex justify-between text-slate-text">
+                    <span>Estimated Tax (18% GST)</span>
+                    <span className="font-medium text-dark-text">₹{(totalPrice() * 0.18).toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
+                  </div>
+                </div>
+                
+                <div className="border-t border-border-gray pt-6 mb-8">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold text-dark-text">Total</span>
+                    <span className="text-2xl font-bold text-brand">
+                      ₹{(totalPrice() * 1.18).toLocaleString(undefined, {maximumFractionDigits: 0})}
+                    </span>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={handleCheckout}
+                  disabled={isProcessing}
+                  className="w-full bg-[#02367B] hover:bg-[#012350] text-white font-bold py-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70"
                 >
-                  <div className="relative w-24 h-24 shrink-0 bg-white/5 rounded-xl p-2 flex items-center justify-center">
-                    <Image
-                      src={item.image || "/images/products/toner-1.png"}
-                      alt={item.name}
-                      fill
-                      className="object-contain p-2"
-                    />
-                  </div>
-                  
-                  <div className="flex-grow">
-                    <Link href={`/buy/${item.productId}`} className="text-lg font-medium text-white hover:text-emerald-400 transition-colors line-clamp-2 mb-2">
-                      {item.name}
-                    </Link>
-                    <div className="text-emerald-400 font-semibold text-lg">
-                      ₹{item.price.toLocaleString()}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-start mt-4 sm:mt-0">
-                    <div className="flex items-center bg-zinc-800/50 rounded-full p-1 border border-zinc-700/50">
-                      <button
-                        onClick={() => updateQuantity(item.productId, Math.max(1, item.quantity - 1))}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
-                      >
-                        <Minus className="w-4 h-4" />
-                      </button>
-                      <span className="w-10 text-center font-medium text-white">
-                        {item.quantity}
-                      </span>
-                      <button
-                        onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
-                    </div>
-
-                    <button
-                      onClick={() => removeItem(item.productId)}
-                      className="p-2 text-red-400 hover:bg-red-400/10 rounded-full transition-colors"
-                      title="Remove item"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-
-          <div className="lg:col-span-1">
-            <div className="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 sticky top-28">
-              <h2 className="text-2xl font-bold text-white mb-6">Order Summary</h2>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex justify-between text-zinc-300">
-                  <span>Subtotal</span>
-                  <span className="text-white font-medium">₹{totalPrice().toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between text-zinc-300">
-                  <span>Shipping</span>
-                  <span className="text-emerald-400 font-medium">Free</span>
-                </div>
-                <div className="flex justify-between text-zinc-300">
-                  <span>Estimated Tax</span>
-                  <span className="text-white font-medium">₹{(totalPrice() * 0.18).toLocaleString()}</span>
-                </div>
-                <div className="pt-4 border-t border-zinc-800 flex justify-between items-center">
-                  <span className="text-lg text-white font-medium">Total</span>
-                  <span className="text-3xl font-bold text-emerald-400">
-                    ₹{(totalPrice() * 1.18).toLocaleString()}
-                  </span>
-                </div>
-              </div>
-
-              <button 
-                onClick={handleCheckout}
-                disabled={isProcessing}
-                className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-semibold py-4 px-6 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:-translate-y-1 flex justify-center items-center disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-              >
-                {isProcessing ? (
-                  <>Processing <Loader2 className="ml-2 w-5 h-5 animate-spin" /></>
-                ) : (
-                  <>Proceed to Checkout <ArrowRight className="ml-2 w-5 h-5" /></>
-                )}
-              </button>
-              
-              <div className="mt-6 text-center text-sm text-zinc-500">
-                Secure checkout powered by Stripe. All major credit cards accepted.
+                  {isProcessing ? (
+                    <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
+                  ) : (
+                    <>Checkout Securely <ArrowRight className="w-5 h-5" /></>
+                  )}
+                </button>
+                
+                <p className="text-xs text-slate-text text-center mt-6 flex items-center justify-center gap-1.5">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                  Payments processed securely via Razorpay
+                </p>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
