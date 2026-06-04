@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { SUBSCRIPTION_PLANS } from "@/data/site-data";
 import { FadeIn, SectionWrapper, SectionHeader } from "@/components/shared/section-wrapper";
 import { useState } from "react";
+import { useCartStore } from "@/store";
+import { useRouter } from "next/navigation";
 
 const faqs = [
   { q: "How does cartridge subscription work?", a: "Choose a plan, and we deliver the right cartridges to your doorstep on schedule. You can modify or cancel anytime." },
@@ -16,6 +18,21 @@ const faqs = [
 
 export default function SubscriptionsPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { addItem } = useCartStore();
+  const router = useRouter();
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
+
+  const handleSubscribe = async (plan: any) => {
+    setAddingToCart(plan.id);
+    await addItem({
+      productId: plan.id,
+      name: `${plan.name} Subscription`,
+      price: plan.price,
+      quantity: 1,
+      image: "/logo.png",
+    });
+    router.push("/cart");
+  };
 
   return (
     <>
@@ -54,8 +71,16 @@ export default function SubscriptionsPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button className={`w-full gap-2 rounded-lg ${plan.isPopular ? "bg-brand hover:bg-brand-dark text-white" : "bg-soft-gray text-dark-text hover:bg-brand-50"}`}>
-                    Get Started <ArrowRight className="w-4 h-4" />
+                  <Button 
+                    onClick={() => handleSubscribe(plan)}
+                    disabled={addingToCart === plan.id}
+                    className={`w-full gap-2 rounded-lg ${plan.isPopular ? "bg-brand hover:bg-brand-dark text-white" : "bg-soft-gray text-dark-text hover:bg-brand-50"}`}
+                  >
+                    {addingToCart === plan.id ? (
+                      "Adding..."
+                    ) : (
+                      <>Get Started <ArrowRight className="w-4 h-4" /></>
+                    )}
                   </Button>
                 </div>
               </FadeIn>
