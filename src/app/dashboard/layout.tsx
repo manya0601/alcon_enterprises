@@ -17,7 +17,6 @@ const sidebarLinks = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Orders", href: "/dashboard/orders", icon: Package },
   { name: "Subscriptions", href: "/dashboard/subscriptions", icon: CreditCard },
-  { name: "Addresses", href: "/dashboard/addresses", icon: MapPin },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
@@ -40,7 +39,6 @@ export default function DashboardLayout({
               </div>
               <div>
                 <h2 className="text-dark-text font-bold">User Account</h2>
-                <p className="text-sm text-slate-text">Premium Member</p>
               </div>
             </div>
 

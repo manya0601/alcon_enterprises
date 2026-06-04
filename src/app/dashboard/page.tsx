@@ -29,8 +29,24 @@ export default function DashboardOverview() {
       setUser(user);
       if (user) {
         const { data: profileData } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-        // Even if no profile row exists, we store what we have (or null)
-        setProfile(profileData || { id: user.id }); 
+        
+        // If we have a profile in DB with a username, use it.
+        if (profileData?.username) {
+          setProfile(profileData);
+        } else if (user.user_metadata?.username) {
+          // If DB profile lacks username but user_metadata has it (from signup), auto-upsert silently
+          const autoProfile = {
+            id: user.id,
+            username: user.user_metadata.username,
+            full_name: user.user_metadata.full_name || '',
+            updated_at: new Date().toISOString()
+          };
+          await supabase.from('profiles').upsert(autoProfile);
+          setProfile(autoProfile);
+        } else {
+          // No username anywhere
+          setProfile(profileData || { id: user.id });
+        }
       }
       setLoading(false);
     };
