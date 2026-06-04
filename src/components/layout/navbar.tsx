@@ -105,7 +105,7 @@ export function Navbar() {
                 alt="Alcon Enterprise" 
                 width={300} 
                 height={100} 
-                className="w-40 md:w-64 h-auto object-contain mix-blend-multiply" 
+                className="h-10 w-auto object-contain mix-blend-multiply" 
                 priority
               />
             </Link>
