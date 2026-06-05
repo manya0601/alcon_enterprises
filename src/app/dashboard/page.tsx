@@ -88,7 +88,7 @@ export default function DashboardOverview() {
   // Profile Completion Gate: Show if user exists but lacks username
   if (user && profile && !profile.username) {
     return (
-      <div className="max-w-md mx-auto py-12">
+      <div className="max-w-md mx-auto py-2">
         <div className="bg-white rounded-3xl p-8 border border-border-gray shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
           <div className="w-16 h-16 bg-brand/10 text-brand rounded-full flex items-center justify-center mb-6 mx-auto">
             <User className="w-8 h-8" />
