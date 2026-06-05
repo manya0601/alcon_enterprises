@@ -28,7 +28,7 @@ export default function DashboardLayout({
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-soft-gray pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-soft-gray pt-8 md:pt-12 pb-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
         {/* Sidebar Navigation */}
         <aside className="w-full md:w-64 shrink-0">

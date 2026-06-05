@@ -99,13 +99,13 @@ export function Navbar() {
           <div className="flex items-center justify-between h-16 md:h-20 gap-4 md:gap-8">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center shrink-0 h-full py-2">
+            <Link href="/" className="flex items-center shrink-0 h-full py-1">
               <Image 
                 src="/logo.png" 
                 alt="Alcon Enterprise" 
                 width={300} 
                 height={100} 
-                className="h-10 md:h-11 w-auto object-contain mix-blend-multiply" 
+                className="h-14 md:h-16 w-auto object-contain mix-blend-multiply" 
                 priority
               />
             </Link>
