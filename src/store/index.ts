@@ -29,6 +29,9 @@ export const useCartStore = create<CartStore>()(
       items: [],
       userId: null,
       setUserId: (id) => {
+        const currentId = get().userId;
+        if (currentId === id) return; // Break the infinite loop!
+        
         set({ userId: id });
         if (id) {
           get().fetchCartFromDB();
