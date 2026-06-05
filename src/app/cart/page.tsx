@@ -64,6 +64,14 @@ export default function CartPage() {
           // but we are relying on the secure backend webhook.
           alert("Payment Successful! Order ID: " + response.razorpay_payment_id);
           clearCart();
+          setIsProcessing(false);
+          document.body.style.overflow = 'auto';
+        },
+        modal: {
+          ondismiss: function () {
+            setIsProcessing(false);
+            document.body.style.overflow = 'auto';
+          }
         },
         prefill: {
           name: "Guest User",
@@ -77,12 +85,20 @@ export default function CartPage() {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const paymentObject = new (window as any).Razorpay(options);
+      
+      paymentObject.on('payment.failed', function (response: any) {
+        console.error("Payment Failed:", response.error);
+        alert("Payment Failed: " + (response.error.description || "Unknown Error"));
+        setIsProcessing(false);
+        document.body.style.overflow = 'auto';
+      });
+
       paymentObject.open();
     } catch (error) {
       console.error(error);
       alert("Something went wrong");
-    } finally {
       setIsProcessing(false);
+      document.body.style.overflow = 'auto';
     }
   };
 
