@@ -70,7 +70,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-soft-gray flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-soft-gray flex flex-col pt-8 pb-16 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8">
         <Link href="/" className="flex items-center justify-center gap-2 text-sm font-medium text-slate-text hover:text-brand transition-colors mb-6">
           <ArrowLeft className="w-4 h-4" /> Back to Home
