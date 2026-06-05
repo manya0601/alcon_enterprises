@@ -84,17 +84,16 @@ export function HeroSection() {
               <div className="relative z-10 w-full aspect-[4/3] max-w-[500px] mx-auto">
                 {/* Main Product Card */}
                 <div className="absolute top-[10%] right-[5%] w-[70%] bg-white rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-border-gray z-20">
-                  <div className="aspect-video bg-soft-gray rounded-xl mb-3 relative overflow-hidden">
+                  <div className="aspect-video bg-soft-gray rounded-xl mb-3 relative overflow-hidden flex items-center justify-center">
                     <Image 
-                      src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=500" 
-                      alt="HP LaserJet Enterprise Printer"
+                      src="/rentals/hp-72625.png" 
+                      alt="Enterprise Xerox Machine"
                       fill
-                      className="object-cover transition-transform duration-500 hover:scale-105"
-                      unoptimized
+                      className="object-contain p-4 mix-blend-multiply transition-transform duration-500 hover:scale-105"
                     />
                     <div className="absolute top-2 left-2 bg-accent-cyan text-white text-[9px] font-bold px-2 py-0.5 rounded-full z-10">BESTSELLER</div>
                   </div>
-                  <h3 className="text-[14px] font-bold text-dark-text mb-1">HP LaserJet Pro Enterprise</h3>
+                  <h3 className="text-[14px] font-bold text-dark-text mb-1">Heavy Duty Enterprise Copier</h3>
                   <div className="flex items-center justify-between">
                     <span className="text-[16px] font-extrabold text-brand">₹35,000</span>
                     <Button size="sm" className="h-7 px-3 text-[11px] rounded-lg bg-brand hover:bg-brand-dark text-white">Add to Cart</Button>
