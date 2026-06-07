@@ -10,6 +10,7 @@ import { useState } from "react";
 export default function CartPage() {
   const { items, updateQuantity, removeItem, totalPrice, clearCart } = useCartStore();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -27,6 +28,7 @@ export default function CartPage() {
 
   const handleCheckout = async () => {
     setIsProcessing(true);
+    setCheckoutError(null);
     const res = await loadRazorpayScript();
 
     if (!res) {
@@ -88,7 +90,7 @@ export default function CartPage() {
       
       paymentObject.on('payment.failed', function (response: any) {
         console.error("Payment Failed:", response.error);
-        alert("Payment Failed: " + (response.error.description || "Unknown Error"));
+        setCheckoutError("Payment Failed: " + (response.error.description || "Unknown Error. Please try again."));
         setIsProcessing(false);
         document.body.style.overflow = 'auto';
       });
@@ -96,7 +98,7 @@ export default function CartPage() {
       paymentObject.open();
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      setCheckoutError("Something went wrong with the checkout process.");
       setIsProcessing(false);
       document.body.style.overflow = 'auto';
     }
@@ -219,6 +221,12 @@ export default function CartPage() {
                     </span>
                   </div>
                 </div>
+
+                {checkoutError && (
+                  <div className="mb-6 bg-red-50 text-red-600 border border-red-200 px-4 py-3 rounded-xl text-sm font-medium">
+                    {checkoutError}
+                  </div>
+                )}
 
                 <button 
                   onClick={handleCheckout}

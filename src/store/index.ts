@@ -55,6 +55,13 @@ export const useCartStore = create<CartStore>()(
       },
       addItem: async (item) => {
         const { userId, items } = get();
+        
+        // Auth Guard
+        if (!userId) {
+          useUIStore.getState().setAuthModalOpen(true);
+          return;
+        }
+
         const existing = items.find((i) => i.productId === item.productId);
         
         let newItems;
@@ -96,6 +103,13 @@ export const useCartStore = create<CartStore>()(
       updateQuantity: async (productId, quantity) => {
         if (quantity < 1) return;
         const { userId, items } = get();
+        
+        // Auth Guard
+        if (!userId) {
+          useUIStore.getState().setAuthModalOpen(true);
+          return;
+        }
+
         set({
           items: items.map((i) => (i.productId === productId ? { ...i, quantity } : i)),
         });
@@ -126,10 +140,12 @@ interface UIStore {
   isMobileMenuOpen: boolean;
   isQuickViewOpen: boolean;
   quickViewProductId: string | null;
+  isAuthModalOpen: boolean;
   setSearchOpen: (open: boolean) => void;
   setMobileMenuOpen: (open: boolean) => void;
   openQuickView: (productId: string) => void;
   closeQuickView: () => void;
+  setAuthModalOpen: (open: boolean) => void;
 }
 
 export const useUIStore = create<UIStore>((set) => ({
@@ -137,8 +153,10 @@ export const useUIStore = create<UIStore>((set) => ({
   isMobileMenuOpen: false,
   isQuickViewOpen: false,
   quickViewProductId: null,
+  isAuthModalOpen: false,
   setSearchOpen: (open) => set({ isSearchOpen: open }),
   setMobileMenuOpen: (open) => set({ isMobileMenuOpen: open }),
   openQuickView: (productId) => set({ isQuickViewOpen: true, quickViewProductId: productId }),
   closeQuickView: () => set({ isQuickViewOpen: false, quickViewProductId: null }),
+  setAuthModalOpen: (open) => set({ isAuthModalOpen: open }),
 }));

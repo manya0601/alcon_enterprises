@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthModal } from "@/components/auth/auth-modal";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -50,6 +51,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <WhatsAppButton />
+          <AuthModal />
         </TooltipProvider>
       </body>
     </html>
