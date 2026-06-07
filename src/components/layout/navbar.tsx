@@ -117,9 +117,9 @@ export function Navbar() {
               <Image 
                 src="/logo.png" 
                 alt="Alcon Enterprise" 
-                width={1200} 
-                height={480} 
-                className="h-64 md:h-[352px] w-auto object-contain mix-blend-multiply" 
+                width={240} 
+                height={96} 
+                className="h-12 md:h-[70px] w-auto object-contain mix-blend-multiply" 
                 priority
               />
             </Link>
@@ -356,9 +356,9 @@ export function Navbar() {
                     <Image 
                       src="/logo.png" 
                       alt="Alcon Enterprise" 
-                      width={800} 
-                      height={240} 
-                      className="w-[640px] max-w-full h-auto object-contain mix-blend-multiply" 
+                      width={160} 
+                      height={48} 
+                      className="w-[128px] max-w-full h-auto object-contain mix-blend-multiply" 
                     />
                   </div>
                   <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-soft-gray" onClick={() => setMobileMenuOpen(false)}>
