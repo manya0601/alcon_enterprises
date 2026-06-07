@@ -55,16 +55,16 @@ export default function AboutPage() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <FadeIn>
             <div className="bg-white p-8 rounded-3xl border border-border-gray shadow-sm">
-              <h2 className="text-sm font-bold text-brand uppercase tracking-widest mb-3 flex items-center gap-2">
+              <h2 className="text-[12px] font-bold text-brand uppercase tracking-widest mb-3 flex items-center gap-2">
                 <span className="w-8 h-0.5 bg-brand rounded-full" /> Our Story
               </h2>
-              <h3 className="text-3xl md:text-4xl font-extrabold text-dark-text mb-6">Built on Trust & Reliability</h3>
+              <h3 className="text-3xl md:text-4xl font-extrabold text-dark-text mb-6 tracking-tight">Built on Trust & Reliability</h3>
               
-              <div className="prose prose-slate text-slate-text leading-relaxed">
-                <p className="mb-4 text-lg">
+              <div className="prose prose-slate text-[15px] md:text-[16px] text-slate-text leading-relaxed">
+                <p className="mb-4">
                   In 1999, Neelkant Gupta started Alcon Enterprise with a simple mission: provide reliable printer servicing and cartridge solutions to businesses in Ahmedabad.
                 </p>
-                <p className="text-lg">
+                <p>
                   What began as a solo founder business has grown into Gujarat's most trusted enterprise hardware partner. We believe that printing infrastructure should be invisible to your workflow—it should just work, reliably and affordably.
                 </p>
               </div>
@@ -80,8 +80,8 @@ export default function AboutPage() {
                   />
                 </div>
                 <div>
-                  <p className="text-dark-text font-bold text-lg">Neelkant Gupta</p>
-                  <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold mt-0.5">Founder & CEO</p>
+                  <p className="text-dark-text font-bold text-[16px]">Neelkant Gupta</p>
+                  <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-bold mt-0.5">Founder & CEO</p>
                 </div>
               </div>
             </div>
@@ -95,13 +95,13 @@ export default function AboutPage() {
                   <Target className="w-8 h-8" />
                 </div>
                 <div>
-                  <h4 className="text-2xl font-bold text-dark-text mb-3">Our Mission</h4>
-                  <p className="text-slate-text leading-relaxed">
+                  <h4 className="text-xl md:text-2xl font-bold text-dark-text mb-3 tracking-tight">Our Mission</h4>
+                  <p className="text-[15px] text-slate-text leading-relaxed">
                     To make enterprise-grade printing solutions accessible and affordable for every business in India, providing unmatched service quality that eliminates downtime and reduces operational costs.
                   </p>
                   <ul className="mt-4 space-y-2">
                     {["Affordable hardware access", "Zero-downtime commitment", "Eco-friendly recycling"].map((item) => (
-                      <li key={item} className="flex items-center gap-2 text-sm font-medium text-dark-text">
+                      <li key={item} className="flex items-center gap-2 text-[14px] font-medium text-dark-text">
                         <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> {item}
                       </li>
                     ))}
@@ -116,8 +116,8 @@ export default function AboutPage() {
                   <Eye className="w-8 h-8" />
                 </div>
                 <div>
-                  <h4 className="text-2xl font-bold text-dark-text mb-3">Our Vision</h4>
-                  <p className="text-slate-text leading-relaxed">
+                  <h4 className="text-xl md:text-2xl font-bold text-dark-text mb-3 tracking-tight">Our Vision</h4>
+                  <p className="text-[15px] text-slate-text leading-relaxed">
                     To be India's definitive leader in managed print services, enabling millions of businesses to focus entirely on their growth while we invisibly power their infrastructure.
                   </p>
                 </div>
@@ -144,9 +144,9 @@ export default function AboutPage() {
                     )}
                   </div>
                   <div className="pb-8">
-                    <span className="text-sm font-bold text-brand">{event.year}</span>
-                    <h4 className="text-xl font-bold text-dark-text mb-2">{event.title}</h4>
-                    <p className="text-slate-text leading-relaxed">{event.description}</p>
+                    <span className="text-[13px] font-bold text-brand uppercase tracking-widest">{event.year}</span>
+                    <h4 className="text-lg md:text-xl font-bold text-dark-text mb-2 tracking-tight">{event.title}</h4>
+                    <p className="text-[15px] text-slate-text leading-relaxed">{event.description}</p>
                   </div>
                 </div>
               </FadeIn>

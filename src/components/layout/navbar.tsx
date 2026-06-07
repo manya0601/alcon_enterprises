@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { useUIStore, useCartStore } from "@/store";
 import { createClient } from "@/utils/supabase/client";
+import { TRENDING_PRODUCTS } from "@/data/products";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,6 +23,19 @@ export function Navbar() {
   const supabase = useMemo(() => createClient(), []);
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase();
+    return TRENDING_PRODUCTS.filter((p) => 
+      p.name.toLowerCase().includes(query) || 
+      p.brand.toLowerCase().includes(query) ||
+      p.category.name.toLowerCase().includes(query)
+    ).slice(0, 5); // Limit to 5 results for dropdown
+  }, [searchQuery]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -111,24 +125,93 @@ export function Navbar() {
             </Link>
 
             {/* Search Bar - Hidden on mobile */}
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                const q = new FormData(e.currentTarget).get("q");
-                if (q) router.push(`/buy?q=${encodeURIComponent(q.toString())}`);
-              }}
-              className="hidden md:flex flex-1 max-w-xl relative group"
-            >
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-brand transition-colors" />
-              <Input 
-                name="q"
-                placeholder="Search printers, cartridges, or parts..." 
-                className="w-full pl-10 pr-4 h-10 bg-soft-gray border-border-gray rounded-full focus-visible:ring-1 focus-visible:ring-brand focus-visible:border-brand transition-all text-[13px]" 
-              />
-              <Button type="submit" size="sm" className="absolute right-1 top-1 bottom-1 h-8 rounded-full bg-brand hover:bg-brand-dark text-white px-4 text-[12px]">
-                Search
-              </Button>
-            </form>
+            <div className="hidden md:flex flex-1 max-w-xl relative group">
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (searchQuery) {
+                    router.push(`/buy?q=${encodeURIComponent(searchQuery)}`);
+                    setIsSearchFocused(false);
+                  }
+                }}
+                className="w-full relative"
+              >
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-brand transition-colors z-10" />
+                <Input 
+                  name="q"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => {
+                    // Small delay to allow clicking dropdown items before hiding
+                    setTimeout(() => setIsSearchFocused(false), 200);
+                  }}
+                  placeholder="Search printers, cartridges, or parts..." 
+                  className="w-full pl-10 pr-24 h-10 bg-soft-gray border-border-gray rounded-full focus-visible:ring-1 focus-visible:ring-brand focus-visible:border-brand transition-all text-[13px] relative z-10" 
+                  autoComplete="off"
+                />
+                <Button type="submit" size="sm" className="absolute right-1 top-1 bottom-1 h-8 rounded-full bg-brand hover:bg-brand-dark text-white px-4 text-[12px] z-10">
+                  Search
+                </Button>
+              </form>
+
+              {/* Autocomplete Dropdown */}
+              <AnimatePresence>
+                {isSearchFocused && searchQuery.trim().length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] border border-border-gray overflow-hidden z-50 flex flex-col max-h-[400px]"
+                  >
+                    {searchResults.length > 0 ? (
+                      <>
+                        <div className="overflow-y-auto p-2 space-y-1">
+                          {searchResults.map((product) => (
+                            <Link 
+                              key={product.id} 
+                              href={`/buy/${product.slug}`}
+                              onClick={() => {
+                                setIsSearchFocused(false);
+                                setSearchQuery("");
+                              }}
+                              className="flex items-center gap-3 p-2 hover:bg-soft-gray rounded-xl transition-colors group/item"
+                            >
+                              <div className="w-12 h-12 bg-white border border-border-gray rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
+                                <Image src={product.images[0]} alt={product.name} width={40} height={40} className="object-contain" unoptimized />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-[13px] font-bold text-dark-text group-hover/item:text-brand truncate">{product.name}</p>
+                                <p className="text-[11px] text-slate-text capitalize truncate">{product.category.name} • {product.brand}</p>
+                              </div>
+                              <div className="text-[13px] font-extrabold text-brand pr-2 shrink-0">
+                                ₹{product.price.toLocaleString()}
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                        <div className="p-2 border-t border-border-gray bg-soft-gray/50">
+                          <Link 
+                            href={`/buy?q=${encodeURIComponent(searchQuery)}`}
+                            onClick={() => setIsSearchFocused(false)}
+                            className="w-full flex items-center justify-center gap-1 text-[12px] font-bold text-brand hover:text-brand-dark py-1.5"
+                          >
+                            View all results <ArrowRight className="w-3 h-3" />
+                          </Link>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="p-8 text-center text-slate-text">
+                        <Search className="w-8 h-8 mx-auto text-border-gray mb-3" />
+                        <p className="text-[14px] font-bold text-dark-text mb-1">No products found</p>
+                        <p className="text-[12px]">Try a different search term</p>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Right actions */}
             <div className="flex items-center gap-2 shrink-0">
@@ -283,10 +366,20 @@ export function Navbar() {
                   </Button>
                 </div>
                 
-                <div className="mb-6 relative">
+                <form 
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const q = new FormData(e.currentTarget).get("q");
+                    if (q) {
+                      router.push(`/buy?q=${encodeURIComponent(q.toString())}`);
+                      setMobileMenuOpen(false);
+                    }
+                  }}
+                  className="mb-6 relative"
+                >
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search..." className="w-full pl-9 h-10 bg-soft-gray border-none rounded-lg text-[13px]" />
-                </div>
+                  <Input name="q" placeholder="Search products..." className="w-full pl-9 h-10 bg-soft-gray border-none rounded-lg text-[13px]" />
+                </form>
 
                 <div className="flex flex-col gap-1">
                   {NAV_LINKS.map((link) => (
