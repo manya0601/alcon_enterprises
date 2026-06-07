@@ -110,16 +110,16 @@ export function Navbar() {
       {/* Main navbar - Ecommerce Style */}
       <header className={`sticky top-0 z-50 w-full bg-white transition-shadow duration-200 ${scrolled ? "shadow-[0_2px_10px_rgba(0,0,0,0.06)]" : "border-b border-border-gray"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 md:h-[100px] gap-4 md:gap-8">
+          <div className="flex items-center justify-between py-4 gap-4 md:gap-8">
 
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0 h-full">
               <Image 
                 src="/logo.png" 
                 alt="Alcon Enterprise" 
-                width={300} 
-                height={120} 
-                className="h-16 md:h-[88px] w-auto object-contain mix-blend-multiply" 
+                width={600} 
+                height={240} 
+                className="h-32 md:h-[176px] w-auto object-contain mix-blend-multiply" 
                 priority
               />
             </Link>
@@ -356,9 +356,9 @@ export function Navbar() {
                     <Image 
                       src="/logo.png" 
                       alt="Alcon Enterprise" 
-                      width={200} 
-                      height={60} 
-                      className="w-40 h-auto object-contain mix-blend-multiply" 
+                      width={400} 
+                      height={120} 
+                      className="w-80 h-auto object-contain mix-blend-multiply" 
                     />
                   </div>
                   <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-soft-gray" onClick={() => setMobileMenuOpen(false)}>
