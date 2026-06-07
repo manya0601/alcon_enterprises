@@ -79,23 +79,6 @@ export const NAV_LINKS: NavLink[] = [
   {
     title: "Rent",
     href: "/rent",
-    children: [
-      {
-        title: "Daily Rental",
-        href: "/rent?type=daily",
-        description: "Short-term rentals for events & projects",
-      },
-      {
-        title: "Monthly Rental",
-        href: "/rent?type=monthly",
-        description: "Flexible monthly plans for businesses",
-      },
-      {
-        title: "Corporate Plans",
-        href: "/rent?type=corporate",
-        description: "Custom enterprise rental solutions",
-      },
-    ],
   },
   {
     title: "Sell",
