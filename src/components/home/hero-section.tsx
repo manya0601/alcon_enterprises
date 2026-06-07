@@ -79,53 +79,55 @@ export function HeroSection() {
           </div>
 
           {/* Right — Printer Showcase / Product Cards */}
-          <div className="lg:col-span-6 relative">
-            <FadeIn delay={0.1}>
-              <div className="relative z-10 w-full aspect-[4/3] max-w-[500px] mx-auto">
+          <div className="lg:col-span-6 relative h-[400px] sm:h-[500px]">
+            <FadeIn delay={0.1} className="w-full h-full">
+              <div className="relative z-10 w-full h-full max-w-[550px] mx-auto">
                 {/* Main Product Card */}
-                <div className="absolute top-[10%] right-[5%] w-[70%] bg-white rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-border-gray z-20">
-                  <div className="aspect-video bg-soft-gray rounded-xl mb-3 relative overflow-hidden flex items-center justify-center">
+                <div className="absolute top-[0%] right-[0%] w-[65%] bg-white rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-border-gray z-20 transition-transform duration-500 hover:-translate-y-2">
+                  <div className="aspect-[4/3] bg-soft-gray rounded-xl mb-3 relative overflow-hidden flex items-center justify-center">
                     <Image 
                       src="/rentals/hp-72625.png" 
                       alt="Enterprise Xerox Machine"
                       fill
-                      className="object-contain p-4 mix-blend-multiply transition-transform duration-500 hover:scale-105"
+                      className="object-contain p-4 mix-blend-multiply transition-transform duration-700 hover:scale-110"
                     />
-                    <div className="absolute top-2 left-2 bg-accent-cyan text-white text-[9px] font-bold px-2 py-0.5 rounded-full z-10">BESTSELLER</div>
+                    <div className="absolute top-2 left-2 bg-accent-cyan text-white text-[9px] font-bold px-2 py-0.5 rounded-full z-10 shadow-sm">BESTSELLER</div>
                   </div>
-                  <h3 className="text-[14px] font-bold text-dark-text mb-1">Heavy Duty Enterprise Copier</h3>
-                  <div className="flex items-center justify-between">
+                  <h3 className="text-[14px] font-bold text-dark-text mb-1 leading-tight">Heavy Duty Enterprise Copier</h3>
+                  <div className="flex items-center justify-between mt-2">
                     <span className="text-[16px] font-extrabold text-brand">₹35,000</span>
                     <Button size="sm" className="h-7 px-3 text-[11px] rounded-lg bg-brand hover:bg-brand-dark text-white">Add to Cart</Button>
                   </div>
                 </div>
 
-                {/* Secondary Service Card */}
-                <div className="absolute bottom-[10%] left-[5%] w-[60%] bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-border-gray z-30">
+                {/* Floating Stat Widget */}
+                <div className="absolute top-[20%] left-[0%] bg-white rounded-xl p-3 shadow-xl border border-border-gray z-30 animate-slide-up transition-transform duration-500 hover:-translate-y-1">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand to-accent-blue flex items-center justify-center shrink-0">
-                      <Wrench className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center shrink-0 border border-green-100">
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
                     </div>
                     <div>
-                      <h4 className="text-[13px] font-bold text-dark-text leading-tight">Printer Repair & AMC</h4>
-                      <p className="text-[11px] text-slate-text mt-0.5">On-site service in 4 hours</p>
+                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Products Sold</p>
+                      <p className="text-[15px] font-extrabold text-dark-text leading-none mt-1">10,000+</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Floating Stat Widget */}
-                <div className="absolute top-[5%] left-[0%] bg-white rounded-xl p-3 shadow-lg border border-border-gray z-10 animate-slide-up">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center"><CheckCircle2 className="w-4 h-4 text-green-600" /></div>
+                {/* Secondary Service Card */}
+                <div className="absolute bottom-[5%] left-[5%] w-[55%] bg-white/95 backdrop-blur-md rounded-2xl p-3.5 shadow-[0_15px_40px_rgba(0,0,0,0.12)] border border-border-gray z-30 transition-transform duration-500 hover:-translate-y-1">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand to-accent-blue flex items-center justify-center shrink-0 shadow-inner">
+                      <Wrench className="w-5 h-5 text-white" />
+                    </div>
                     <div>
-                      <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Products Sold</p>
-                      <p className="text-[14px] font-bold text-dark-text">10,000+</p>
+                      <h4 className="text-[13px] font-bold text-dark-text leading-tight">Printer Repair & AMC</h4>
+                      <p className="text-[11px] text-slate-text mt-0.5 font-medium">On-site service in 4 hours</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Decorative Elements */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-light-sky to-brand-50 rounded-full blur-[80px] -z-10 opacity-50" />
+                <div className="absolute top-[10%] left-[10%] w-[80%] h-[80%] bg-gradient-to-tr from-light-sky to-brand-50 rounded-full blur-[80px] -z-10 opacity-60" />
               </div>
             </FadeIn>
           </div>
