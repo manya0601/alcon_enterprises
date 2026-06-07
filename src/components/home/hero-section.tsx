@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
 import { FadeIn } from "@/components/shared/section-wrapper";
 import { CLIENT_LOGOS } from "@/lib/constants";
+import { useCartStore } from "@/store";
 
 export function HeroSection() {
+  const addItem = useCartStore((state) => state.addItem);
+
   return (
     <section className="relative bg-white overflow-hidden border-b border-border-gray">
       {/* Background colorful blur */}
@@ -83,7 +86,7 @@ export function HeroSection() {
             <FadeIn delay={0.1} className="w-full h-full">
               <div className="relative z-10 w-full h-full max-w-[550px] mx-auto">
                 {/* Main Product Card */}
-                <div className="absolute top-[0%] right-[0%] w-[65%] bg-white rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-border-gray z-20 transition-transform duration-500 hover:-translate-y-2">
+                <div className="absolute top-[5%] right-[5%] w-[55%] bg-white rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-border-gray z-20 transition-transform duration-500 hover:-translate-y-2">
                   <div className="aspect-[4/3] bg-soft-gray rounded-xl mb-3 relative overflow-hidden flex items-center justify-center">
                     <Image 
                       src="/rentals/hp-72625.png" 
@@ -96,7 +99,22 @@ export function HeroSection() {
                   <h3 className="text-[14px] font-bold text-dark-text mb-1 leading-tight">Heavy Duty Enterprise Copier</h3>
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-[16px] font-extrabold text-brand">₹35,000</span>
-                    <Button size="sm" className="h-7 px-3 text-[11px] rounded-lg bg-brand hover:bg-brand-dark text-white">Add to Cart</Button>
+                    <Button 
+                      size="sm" 
+                      onClick={async () => {
+                        const success = await addItem({
+                          productId: "hero-copier-1",
+                          name: "Heavy Duty Enterprise Copier",
+                          price: 35000,
+                          quantity: 1,
+                          image: "/rentals/hp-72625.png"
+                        });
+                        if (success) alert("Added to cart!");
+                      }}
+                      className="h-7 px-3 text-[11px] rounded-lg bg-brand hover:bg-brand-dark text-white"
+                    >
+                      Add to Cart
+                    </Button>
                   </div>
                 </div>
 
