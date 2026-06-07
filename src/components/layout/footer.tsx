@@ -53,7 +53,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
             <Link href="/" className="flex items-center shrink-0 mb-4">
-              <img src="/logo.png" alt="Alcon Enterprise" className="w-96 h-auto max-w-full object-contain brightness-0 invert" />
+              <img src="/logo.png" alt="Alcon Enterprise" className="w-[768px] h-auto max-w-full object-contain brightness-0 invert" />
             </Link>
             <p className="text-[12px] text-white/50 leading-relaxed mb-4 max-w-xs">
               India&apos;s trusted printer &amp; enterprise hardware solutions since 1999.
