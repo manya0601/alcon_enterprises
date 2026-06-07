@@ -84,16 +84,16 @@ export function FeaturedProducts() {
 
                       <Button 
                         className="w-full gap-2 bg-white text-brand border border-brand/20 hover:bg-brand hover:text-white hover:border-brand rounded-xl text-[13px] font-bold h-10 shadow-sm transition-all group-hover:bg-brand group-hover:text-white group-hover:shadow-[0_4px_12px_rgba(2,54,123,0.2)]"
-                        onClick={(e) => {
+                        onClick={async (e) => {
                           e.preventDefault();
-                          addItem({
+                          const success = await addItem({
                             productId: p.id,
                             name: p.name,
                             price: p.price,
                             quantity: 1,
                             image: p.images[0]
                           });
-                          alert("Added to cart!");
+                          if (success) alert("Added to cart!");
                         }}
                       >
                         <ShoppingCart className="w-4 h-4" /> Add to Cart

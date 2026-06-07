@@ -18,26 +18,26 @@ export function AddToCartGroup({ product }: AddToCartGroupProps) {
   const addItem = useCartStore((state) => state.addItem);
   const router = useRouter();
 
-  const handleAddToCart = () => {
-    addItem({
+  const handleAddToCart = async () => {
+    const success = await addItem({
       productId: product.id,
       name: product.name,
       price: product.price,
       quantity: 1,
       image: product.image,
     });
-    alert("Added to cart!");
+    if (success) alert("Added to cart!");
   };
 
-  const handleBuyNow = () => {
-    addItem({
+  const handleBuyNow = async () => {
+    const success = await addItem({
       productId: product.id,
       name: product.name,
       price: product.price,
       quantity: 1,
       image: product.image,
     });
-    router.push("/cart");
+    if (success) router.push("/cart");
   };
 
   return (
