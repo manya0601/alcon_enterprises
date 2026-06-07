@@ -15,7 +15,7 @@ export function HeroSection() {
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-light-sky via-white to-white opacity-60 pointer-events-none" />
       <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[70%] rounded-full bg-accent-cyan/5 blur-[120px] pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 md:pt-10 md:pb-20">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
           {/* Left — Content */}
