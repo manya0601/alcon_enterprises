@@ -111,16 +111,24 @@ export function Navbar() {
             </Link>
 
             {/* Search Bar - Hidden on mobile */}
-            <div className="hidden md:flex flex-1 max-w-xl relative group">
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                const q = new FormData(e.currentTarget).get("q");
+                if (q) router.push(`/buy?q=${encodeURIComponent(q.toString())}`);
+              }}
+              className="hidden md:flex flex-1 max-w-xl relative group"
+            >
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-brand transition-colors" />
               <Input 
+                name="q"
                 placeholder="Search printers, cartridges, or parts..." 
                 className="w-full pl-10 pr-4 h-10 bg-soft-gray border-border-gray rounded-full focus-visible:ring-1 focus-visible:ring-brand focus-visible:border-brand transition-all text-[13px]" 
               />
-              <Button size="sm" className="absolute right-1 top-1 bottom-1 h-8 rounded-full bg-brand hover:bg-brand-dark text-white px-4 text-[12px]">
+              <Button type="submit" size="sm" className="absolute right-1 top-1 bottom-1 h-8 rounded-full bg-brand hover:bg-brand-dark text-white px-4 text-[12px]">
                 Search
               </Button>
-            </div>
+            </form>
 
             {/* Right actions */}
             <div className="flex items-center gap-2 shrink-0">

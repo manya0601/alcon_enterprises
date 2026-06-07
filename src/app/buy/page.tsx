@@ -7,12 +7,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TRENDING_PRODUCTS, PRODUCT_CATEGORIES } from "@/data/products";
 import { FadeIn } from "@/components/shared/section-wrapper";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useCartStore } from "@/store";
 
-export default function BuyPage() {
+function BuyContent() {
+  const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
+  
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q) setSearchQuery(q);
+  }, [searchParams]);
+
   const addItem = useCartStore((state) => state.addItem);
 
   const filtered = TRENDING_PRODUCTS.filter((p) => {
@@ -156,5 +164,13 @@ export default function BuyPage() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function BuyPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-soft-gray p-20 text-center">Loading catalog...</div>}>
+      <BuyContent />
+    </Suspense>
   );
 }

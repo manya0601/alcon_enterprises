@@ -30,11 +30,11 @@ export function FeaturedProducts() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+        <div className="flex overflow-x-auto gap-4 md:gap-5 pb-6 snap-x snap-mandatory hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
           {products.map((p, i) => {
             const discount = p.comparePrice ? Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100) : 0;
             return (
-              <FadeIn key={p.id} delay={i * 0.04}>
+              <FadeIn key={p.id} delay={i * 0.04} className="shrink-0 w-[280px] sm:w-[300px] snap-start h-full">
                 <Link href={`/buy/${p.slug}`} className="bg-white rounded-2xl border border-border-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:border-accent-blue/30 transition-all duration-300 group flex flex-col h-full relative overflow-hidden block">
                   
                   {/* Badges */}
