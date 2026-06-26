@@ -54,7 +54,7 @@ export default function CartPage() {
 
       // 2. Initialize Razorpay Checkout
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_SvB97zg6ob8RYG", // Enter the Key ID generated from the Dashboard
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
         amount: data.amount,
         currency: data.currency,
         name: "Alcon Enterprises",
@@ -62,12 +62,30 @@ export default function CartPage() {
         order_id: data.orderId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         handler: async function (response: any) {
-          // You could optionally verify the signature here on the client,
-          // but we are relying on the secure backend webhook.
-          alert("Payment Successful! Order ID: " + response.razorpay_payment_id);
-          clearCart();
-          setIsProcessing(false);
-          document.body.style.overflow = 'auto';
+          try {
+            const verifyRes = await fetch("/api/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
+            const verifyData = await verifyRes.json();
+            
+            if (verifyRes.ok && verifyData.success) {
+              alert("Payment Successful! Order ID: " + response.razorpay_payment_id);
+              clearCart();
+            } else {
+              alert("Payment Verification Failed: " + (verifyData.error || "Please contact support."));
+            }
+          } catch (err) {
+            alert("Error verifying payment. Please contact support.");
+          } finally {
+            setIsProcessing(false);
+            document.body.style.overflow = 'auto';
+          }
         },
         modal: {
           ondismiss: function () {

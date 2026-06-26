@@ -13,8 +13,14 @@ export async function POST(req: Request) {
     const { amount, items } = body;
 
     // Razorpay amount is in paise (multiply by 100)
+    const amountInPaise = Math.round(amount * 100);
+
+    if (amountInPaise < 100) {
+      return NextResponse.json({ error: "Amount must be at least ₹1" }, { status: 400 });
+    }
+
     const orderOptions = {
-      amount: Math.round(amount * 100),
+      amount: amountInPaise,
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };
