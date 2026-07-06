@@ -38,18 +38,26 @@ export function AuthModal() {
 
     const formattedPhone = phone.startsWith("+") ? phone : `+91${phone}`;
 
-    const { error } = await supabase.auth.signInWithOtp({
-      phone: formattedPhone,
-    });
+    try {
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: formattedPhone }),
+      });
+      const data = await res.json();
 
-    if (error) {
-      setError(error.message);
+      if (!res.ok) {
+        setError(data.error || "Failed to send OTP");
+        setLoading(false);
+        return;
+      }
+
+      setStep("OTP");
+    } catch (err) {
+      setError("Network error. Please try again.");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setStep("OTP");
-    setLoading(false);
   };
 
   const handleVerifyOtp = async (e: React.FormEvent) => {
@@ -59,22 +67,31 @@ export function AuthModal() {
 
     const formattedPhone = phone.startsWith("+") ? phone : `+91${phone}`;
 
-    const { error } = await supabase.auth.verifyOtp({
-      phone: formattedPhone,
-      token: otp,
-      type: "sms",
-    });
+    try {
+      const res = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: formattedPhone, otp }),
+      });
+      const data = await res.json();
 
-    if (error) {
-      setError(error.message);
+      if (!res.ok) {
+        setError(data.error || "Invalid OTP");
+        setLoading(false);
+        return;
+      }
+
+      // Success
       setLoading(false);
-      return;
+      setAuthModalOpen(false);
+      
+      // Since we are setting a secure HttpOnly cookie on the server for the custom JWT,
+      // we need to reload the page so the Next.js SSR components and client store can pick it up.
+      window.location.reload();
+    } catch (err) {
+      setError("Network error. Please try again.");
+      setLoading(false);
     }
-
-    // Success
-    setLoading(false);
-    setAuthModalOpen(false);
-    // User is automatically tracked by supabase auth listener in navbar/store
   };
 
   return (
