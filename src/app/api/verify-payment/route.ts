@@ -30,15 +30,23 @@ export async function POST(req: Request) {
     }
 
     // Update order status in Supabase if signature is valid
-    const { error } = await supabase
+    const { data: orderData, error } = await supabase
       .from('orders')
-      .update({ status: 'paid' })
-      .eq('razorpay_order_id', razorpay_order_id);
+      .update({ status: 'paid', razorpay_payment_id: razorpay_payment_id })
+      .eq('razorpay_order_id', razorpay_order_id)
+      .select('amount, customer_phone')
+      .single();
 
     if (error) {
       console.error("Supabase update error:", error);
       // We still return success to the client because the payment itself is verified,
       // but log the error for backend consistency.
+    } else if (orderData && orderData.customer_phone) {
+      // Send Payment Success SMS
+      import('@/lib/springedge').then(({ sendPaymentSMS }) => {
+        sendPaymentSMS(orderData.customer_phone, razorpay_order_id, orderData.amount)
+          .catch(err => console.error("Failed to send payment SMS:", err));
+      });
     }
 
     return NextResponse.json({ success: true, message: "Payment verified successfully" });

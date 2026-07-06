@@ -10,7 +10,7 @@ const razorpay = new Razorpay({
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { amount, items } = body;
+    const { amount, items, customer_phone, customer_email } = body;
 
     // Razorpay amount is in paise (multiply by 100)
     const amountInPaise = Math.round(amount * 100);
@@ -33,7 +33,9 @@ export async function POST(req: Request) {
         razorpay_order_id: order.id,
         amount: amount,
         status: 'created',
-        items: items
+        items: items,
+        customer_phone: customer_phone || null,
+        customer_email: customer_email || null
       }
     ]);
 
